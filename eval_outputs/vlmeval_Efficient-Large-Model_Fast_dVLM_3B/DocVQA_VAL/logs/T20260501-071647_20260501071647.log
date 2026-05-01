@@ -1,0 +1,30 @@
+[2026-05-01 07:16:47] WARNING - vlmeval.run: --reuse is not set, this run will start from a fresh output directory
+[2026-05-01 07:16:49] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:50] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:50] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:50] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:51] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:51] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:51] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:16:52] INFO - vlmeval.run: =========== Fast_dVLM ===========
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:11] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
+[2026-05-01 07:17:35] INFO - vlmeval.run: {'nproc': 32, 'verbose': True, 'retry': 6, 'timeout': 600}
+[2026-05-01 07:27:04] INFO - vlmeval.run: The evaluation of model Fast_dVLM x dataset DocVQA_VAL has finished! 
+[2026-05-01 07:27:04] INFO - vlmeval.run: Evaluation Results:
+[2026-05-01 07:27:04] INFO - vlmeval.run: 
+-------  -------
+val      92.8952
+Overall  92.8952
+-------  -------
+[2026-05-01 07:27:05] INFO - vlmeval.run: Run Summary Report:
+[2026-05-01 07:27:05] INFO - vlmeval.run: 
+benchmark    infer_fail_rate    judge_fail_rate    primary_metric      primary_metric_value  skip_reason    eval_error
+-----------  -----------------  -----------------  ----------------  ----------------------  -------------  ------------
+DocVQA_VAL   0.00% (0/5349)     0.00% (0/5349)     Overall                             92.9  -              -

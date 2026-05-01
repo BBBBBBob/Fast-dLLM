@@ -1,6 +1,12 @@
-transformers>=4.49.0
-torch>=2.0.0
-accelerate>=0.34.2
-qwen_vl_utils
-gradio
-Pillow
+# PyTorch: cu124 wheels (same stack as conda env ``dvlm``: torch 2.6.0+cu124). Avoids cu130
+# wheels that require a newer NVIDIA user-space driver than typical 12.2 installs.
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+transformers>=4.57.1,<5.0
+torch==2.6.0
+torchvision==0.21.0
+accelerate>=1.12.0,<2.0
+qwen-vl-utils==0.0.14
+gradio>=3.35.2,<4.0
+Pillow>=10.0.0
+openai>=1.0.0

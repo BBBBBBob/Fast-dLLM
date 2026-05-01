@@ -52,10 +52,7 @@ Fast-dLLM/
 │   ├── app.py / run_chatbot.py
 │   ├── requirements.txt
 │   └── README.md
-├── fast_dvlm/              # Fast-dVLM: Block-diffusion VLM
-│   ├── run_chatbot.py      #   Command-line chatbot
-│   ├── requirements.txt
-│   └── README.md
+├── fast_dvlm/              # Fast-dVLM: Block-diffusion VLM (chatbot + VLMEval; see fast_dvlm/README.md)
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md               # This file

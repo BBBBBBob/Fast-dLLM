@@ -1,0 +1,2 @@
+[2026-05-01 07:02:50] WARNING - vlmeval.run: --reuse is not set, this run will start from a fresh output directory
+[2026-05-01 07:02:50] INFO - vlmeval.run: =========== Fast_dVLM ===========

@@ -99,6 +99,8 @@ print(response)
 
 ### Command Line Chatbot
 
+Checkpoint is `--model-name` (default `Efficient-Large-Model/Fast_dVLM_3B`): HuggingFace repo id or a local path, same as `MODEL_PATH` for `run_eval.sh`.
+
 ```bash
 # Single query
 python run_chatbot.py --prompt "Describe this image." --image path/to/image.jpg
@@ -112,13 +114,42 @@ Commands in interactive mode:
 - `clear` - Clear conversation history
 - `exit` - Quit the chatbot
 
+## Evaluation (VLMEvalKit)
+
+[VLMEvalKit](https://github.com/open-compass/VLMEvalKit) is **vendored** at `../third_party/VLMEvalKit` (i.e. `Fast-dLLM/third_party/VLMEvalKit`). `run_eval.sh` runs one dataset per invocation; **default `TASK` is `DocVQA_VAL`** as a concrete example—override with `TASK=…` for any other VLMEval split.
+
+From the **Fast-dLLM repository root**:
+
+```bash
+pip install -r fast_dvlm/requirements.txt
+pip install -e third_party/VLMEvalKit
+```
+
+Example (DocVQA val split by default). Use the **same checkpoint** as the chatbot: HuggingFace id or local directory for `run_chatbot.py --model-name` (default `Efficient-Large-Model/Fast_dVLM_3B`).
+
+```bash
+bash fast_dvlm/run_eval.sh --help
+MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B bash fast_dvlm/run_eval.sh
+# Local tree: MODEL_PATH=/path/to/Fast_dVLM_3B bash fast_dvlm/run_eval.sh
+# Other split: TASK=MMBench_DEV_EN_V11 DATASET_CLASS=ImageMCQDataset MODEL_PATH=… bash fast_dvlm/run_eval.sh
+```
+
+Inference uses the checkpoint’s own `generate` in `modeling.py` (`trust_remote_code` + `AutoModelForCausalLM`), same stack as `run_chatbot.py`. This folder only adds `vlmeval_run.py` (VLMEval config + thin wrapper) and `run_eval.sh`. If weights live in a folder without a processor, set `PROCESSOR_PATH` (e.g. `Qwen/Qwen2.5-VL-3B-Instruct`); otherwise the processor is loaded from `MODEL_PATH` like the chatbot.
+
+To refresh VLMEvalKit, replace `third_party/VLMEvalKit` and commit.
+
 ## File Structure
 
 ```
-fast_dvlm/
-├── README.md               # This file
-├── requirements.txt        # Dependencies
-└── run_chatbot.py          # Command-line chatbot
+Fast-dLLM/
+├── third_party/
+│   └── VLMEvalKit/
+└── fast_dvlm/
+    ├── README.md
+    ├── requirements.txt
+    ├── run_chatbot.py
+    ├── vlmeval_run.py              # config + VLMEval hook (calls ckpt ``generate``)
+    └── run_eval.sh                 # VLMEval driver (default TASK=DocVQA_VAL)
 ```
 
 ## Citation
