@@ -7,3 +7,4 @@ v1/llada/evals_results/
 v1/dream/evals_results/
 .DS_Store
 **/.DS_Store
+eval_outputs/

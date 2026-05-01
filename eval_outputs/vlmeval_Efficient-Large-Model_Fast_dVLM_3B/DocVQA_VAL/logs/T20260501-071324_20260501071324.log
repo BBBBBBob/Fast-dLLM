@@ -1,4 +1,0 @@
-[2026-05-01 07:13:24] WARNING - vlmeval.run: --reuse is not set, this run will start from a fresh output directory
-[2026-05-01 07:13:24] INFO - vlmeval.run: =========== Fast_dVLM ===========
-[2026-05-01 07:13:36] INFO - vlmeval.run: ----------- DocVQA_VAL -----------
-[2026-05-01 07:13:41] INFO - vlmeval.run: {'nproc': 32, 'verbose': True, 'retry': 6, 'timeout': 600}
