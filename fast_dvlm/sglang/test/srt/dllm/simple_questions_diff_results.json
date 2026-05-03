@@ -1,0 +1,162 @@
+[
+  {
+    "label": "Q0_no_tmpl: What is 1+1?",
+    "prompt": "Q0_no_tmpl: What is 1+1?",
+    "hf_len": 122,
+    "sgl_len": 128,
+    "first_diff_pos": 122,
+    "match_rate": 1.0,
+    "hf_text": "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+",
+    "sgl_text": "1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+"
+  },
+  {
+    "label": "Q1_no_tmpl: What is the capital of France?",
+    "prompt": "Q1_no_tmpl: What is the capital of France?",
+    "hf_len": 1,
+    "sgl_len": 1,
+    "first_diff_pos": null,
+    "match_rate": 1.0,
+    "hf_text": "<|im_end|>",
+    "sgl_text": ""
+  },
+  {
+    "label": "Q2_no_tmpl: What color is the sky?",
+    "prompt": "Q2_no_tmpl: What color is the sky?",
+    "hf_len": 123,
+    "sgl_len": 128,
+    "first_diff_pos": 0,
+    "match_rate": 0.0975609756097561,
+    "hf_text": " The the sky is blue.\nWhat color is the grass? The grass is green.\nWhat color is the ocean? The ocean is blue.\nWhat color is the sand? The sand is brown.\nWhat color is the apple? The apple is red.\nWhat color is the banana? The banana is yellow.\nWhat color is the cherry? The cherry is red.\nWhat color is the tomato? The tomato is red.\nWhat color is the carrot? The carrot is orange.\nWhat color is the onion? The onion is white.\nWhat color is the pepper? The pepper is green.\nWhat color is the mushroom? The",
+    "sgl_text": " What the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What"
+  },
+  {
+    "label": "Q3_no_tmpl: How many days are in a week?",
+    "prompt": "Q3_no_tmpl: How many days are in a week?",
+    "hf_len": 121,
+    "sgl_len": 128,
+    "first_diff_pos": 0,
+    "match_rate": 0.08264462809917356,
+    "hf_text": "InThere are 7 days in a week.\n\nHow many days are in a typical month?\nThere are 30 days in a typical month.\n\nHow many days are in a typical year?\nThere are 365 in a typical year.\n\nHow many days are in a leap year?\nThere are 366 days in a leap year.\n\nHow many days are in a decade?\nThere are 3650 days in a decade.\n\nHow many days are in a century?\nThere are 36500 days in a century.\n\nHow many days are in a millennium?\nThere",
+    "sgl_text": " ( There are 7 days in a week. )\n3. How many hours are in a day? ( There are 24 hours in a day. )\n4. How many minutes are in an hour? ( There are 60 minutes in an hour. )\n5. How many seconds are in a minute? ( There are 60 seconds in a minute. )\n\nNow, we can calculate the total number of seconds in a week by multiplying these numbers together:\n\n\\[ 7 \\text{ days/week} \\times 24 \\text{ hours/day} \\times 60 \\text{ minutes/hour"
+  },
+  {
+    "label": "Q4_no_tmpl: What is 2 * 3 + 4?",
+    "prompt": "Q4_no_tmpl: What is 2 * 3 + 4?",
+    "hf_len": 118,
+    "sgl_len": 36,
+    "first_diff_pos": 0,
+    "match_rate": 0.25,
+    "hf_text": "  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is 2 * 3 + 4?  answer is 10\nWhat is ",
+    "sgl_text": " The answer is 2 * 3 + 4 = 6 + 4 = 10.\n\n#### 2 * 3 + 4 = 10"
+  },
+  {
+    "label": "Q5_no_tmpl: Who wrote Romeo and Juliet?",
+    "prompt": "Q5_no_tmpl: Who wrote Romeo and Juliet?",
+    "hf_len": 9,
+    "sgl_len": 9,
+    "first_diff_pos": 0,
+    "match_rate": 0.3333333333333333,
+    "hf_text": "\n\nThe answer is: William Shakespeare<|im_end|>",
+    "sgl_text": "1\nMy answer: William Shakespeare1"
+  },
+  {
+    "label": "Q6_no_tmpl: What is the largest planet in ",
+    "prompt": "Q6_no_tmpl: What is the largest planet in ",
+    "hf_len": 119,
+    "sgl_len": 6,
+    "first_diff_pos": 0,
+    "match_rate": 0.0,
+    "hf_text": " What is the smallest planet in our solar system? What is the distance between the Earth and the Sun in kilometers? What is the distance between the Earth and the Sun in miles? What is the distance between the Earth and the Sun in light? What is the distance between the Earth and the Sun in parse-years? What is the distance between the Earth and the Sun in kil-years? What is the distance between the Earth and the Sun in astronomical-years? What is the distance between the Earth and the Sun in cosmic-years? What is the distance between the Earth and the Sun in meg-years?",
+    "sgl_text": "\n\nA: Jupiter"
+  },
+  {
+    "label": "Q7_no_tmpl: If I have 10 apples and give a",
+    "prompt": "Q7_no_tmpl: If I have 10 apples and give a",
+    "hf_len": 1,
+    "sgl_len": 3,
+    "first_diff_pos": 0,
+    "match_rate": 0.0,
+    "hf_text": "<|im_end|>",
+    "sgl_text": "1?"
+  },
+  {
+    "label": "Q0_tmpl: What is 1+1?",
+    "prompt": "Q0_tmpl: What is 1+1?",
+    "hf_len": 12,
+    "sgl_len": 12,
+    "first_diff_pos": null,
+    "match_rate": 1.0,
+    "hf_text": "The answer to 1+1 is 2.<|im_end|>",
+    "sgl_text": "The answer to 1+1 is 2."
+  },
+  {
+    "label": "Q1_tmpl: What is the capital of France?",
+    "prompt": "Q1_tmpl: What is the capital of France?",
+    "hf_len": 8,
+    "sgl_len": 6,
+    "first_diff_pos": 5,
+    "match_rate": 0.8333333333333334,
+    "hf_text": "The capital of France is Paris.<|im_end|>",
+    "sgl_text": "The capital of France is"
+  },
+  {
+    "label": "Q2_tmpl: What color is the sky?",
+    "prompt": "Q2_tmpl: What color is the sky?",
+    "hf_len": 91,
+    "sgl_len": 115,
+    "first_diff_pos": 8,
+    "match_rate": 0.12087912087912088,
+    "hf_text": "The sky is typically blue during the day due to the scattering of sunlight by the Earth's atmosphere. This phenomenon is known as Rayleigh scattering, where shorter wavelengths of light, like blue and, are scattered more than longer wavelengths, like red and green. However, the sky can appear different colors at sunrise and sunset, such as pink, orange, and red, due to the longer path of light through the atmosphere and the scattering of shorter wavelengths.<|im_end|>",
+    "sgl_text": "The sky is typically blue during the day, especially during sunny days. This is because the Earth's atmosphere scatters sunlight in all directions, and the shorter (blue)) wavelengths of light are scattered more than the longer (red) wavelengths. This results in the sky appearing blue. However, the color of the sky can change depending on the time of day, weather conditions, and other factors. For example, the sun rises and sets, the sky can appear pink, orange, or red. Additionally, during cloudy days, the sky can appear gray or white."
+  },
+  {
+    "label": "Q3_tmpl: How many days are in a week?",
+    "prompt": "Q3_tmpl: How many days are in a week?",
+    "hf_len": 10,
+    "sgl_len": 9,
+    "first_diff_pos": 0,
+    "match_rate": 0.0,
+    "hf_text": "There are 7 days in a week.<|im_end|>",
+    "sgl_text": "A week consists of 7 days."
+  },
+  {
+    "label": "Q4_tmpl: What is 2 * 3 + 4?",
+    "prompt": "Q4_tmpl: What is 2 * 3 + 4?",
+    "hf_len": 48,
+    "sgl_len": 54,
+    "first_diff_pos": 17,
+    "match_rate": 0.3541666666666667,
+    "hf_text": "The answer is 10. According to the order of operations, you should perform multiplication before addition. So, you first multiply 2 and 3 to get 6, and then add 4 to get 10.<|im_end|>",
+    "sgl_text": "The answer is 10. According to the order of operations, you should perform the multiplication before the addition. So, you would calculate 2 * 3, which equals 6, and then add 4 to that, resulting in 10."
+  },
+  {
+    "label": "Q5_tmpl: Who wrote Romeo and Juliet?",
+    "prompt": "Q5_tmpl: Who wrote Romeo and Juliet?",
+    "hf_len": 11,
+    "sgl_len": 11,
+    "first_diff_pos": 2,
+    "match_rate": 0.9090909090909091,
+    "hf_text": "Romeo Juliet was written by William Shakespeare.<|im_end|>",
+    "sgl_text": "Rome and Juliet was written by William Shakespeare."
+  },
+  {
+    "label": "Q6_tmpl: What is the largest planet in ",
+    "prompt": "Q6_tmpl: What is the largest planet in ",
+    "hf_len": 78,
+    "sgl_len": 11,
+    "first_diff_pos": 10,
+    "match_rate": 0.9090909090909091,
+    "hf_text": "The largest planet in our solar system is Jupiter. It is a gas giant with a diameter of approximately 812,000 miles (1,328,000 kilometers), making it about 11 times wider than Earth. Jupiter is known for its Great red Spot, a long-lasting storm larger than our entire planet, and its strong magnetic field.<|im_end|>",
+    "sgl_text": "The largest planet in our solar system is Jupiter."
+  },
+  {
+    "label": "Q7_tmpl: If I have 10 apples and give a",
+    "prompt": "Q7_tmpl: If I have 10 apples and give a",
+    "hf_len": 36,
+    "sgl_len": 23,
+    "first_diff_pos": 22,
+    "match_rate": 0.9565217391304348,
+    "hf_text": "If you initially have 10 apples and give away 3, you will have 7 apples left. This is because 10 - 3 = 7.<|im_end|>",
+    "sgl_text": "If you initially have 10 apples and give away 3, you will have 7 apples left."
+  }
+]

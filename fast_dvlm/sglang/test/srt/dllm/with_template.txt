@@ -1,0 +1,1068 @@
+====================================================================================================
+  HF vs SGLang Token Comparison — WITH Chat Template
+  Model: Efficient-Large-Model/Fast_dLLM_v2_7B
+  Settings: max_new_tokens=512, block_size=32, small_block_size=8, threshold=0.9, temperature=0.0
+====================================================================================================
+
+====================================================================================================
+[GSM8K Q0 (template): Janet’s ducks lay 16 eggs per day. She eats three for breakf]
+  HF  generated: 60 tokens
+  SGL generated: 60 tokens
+  First divergence position: NONE (all identical)
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     53665      ' Janet'                  53665      ' Janet'                 
+  1        OK     30778      ' sells'                  30778      ' sells'                 
+  2        OK     220        ' '                       220        ' '                      
+  3        OK     16         '1'                       16         '1'                      
+  4        OK     21         '6'                       21         '6'                      
+  5        OK     481        ' -'                      481        ' -'                     
+  6        OK     220        ' '                       220        ' '                      
+  7        OK     18         '3'                       18         '3'                      
+  8        OK     481        ' -'                      481        ' -'                     
+  9        OK     220        ' '                       220        ' '                      
+  10       OK     19         '4'                       19         '4'                      
+  11       OK     284        ' ='                      284        ' ='                     
+  12       OK     1115       ' <<'                     1115       ' <<'                    
+  13       OK     16         '1'                       16         '1'                      
+  14       OK     21         '6'                       21         '6'                      
+  15       OK     12         '-'                       12         '-'                      
+  16       OK     18         '3'                       18         '3'                      
+  17       OK     12         '-'                       12         '-'                      
+  18       OK     19         '4'                       19         '4'                      
+  19       OK     28         '='                       28         '='                      
+  20       OK     24         '9'                       24         '9'                      
+  21       OK     2452       '>>'                      2452       '>>'                     
+  22       OK     24         '9'                       24         '9'                      
+  23       OK     35985      ' duck'                   35985      ' duck'                  
+  24       OK     18805      ' eggs'                   18805      ' eggs'                  
+  25       OK     264        ' a'                      264        ' a'                     
+  26       OK     1899       ' day'                    1899       ' day'                   
+  27       OK     624        '.\n'                     624        '.\n'                    
+  28       OK     7941       'She'                     7941       'She'                    
+  29       OK     3643       ' makes'                  3643       ' makes'                 
+  30       OK     220        ' '                       220        ' '                      
+  31       OK     24         '9'                       24         '9'                      
+  32       OK     353        ' *'                      353        ' *'                     
+  33       OK     220        ' '                       220        ' '                      
+  34       OK     17         '2'                       17         '2'                      
+  35       OK     284        ' ='                      284        ' ='                     
+  36       OK     400        ' $'                      400        ' $'                     
+  37       OK     2442       '<<'                      2442       '<<'                     
+  38       OK     24         '9'                       24         '9'                      
+  39       OK     9          '*'                       9          '*'                      
+  40       OK     17         '2'                       17         '2'                      
+  41       OK     28         '='                       28         '='                      
+  42       OK     16         '1'                       16         '1'                      
+  43       OK     23         '8'                       23         '8'                      
+  44       OK     2452       '>>'                      2452       '>>'                     
+  45       OK     16         '1'                       16         '1'                      
+  46       OK     23         '8'                       23         '8'                      
+  47       OK     1449       ' every'                  1449       ' every'                 
+  48       OK     1899       ' day'                    1899       ' day'                   
+  49       OK     518        ' at'                     518        ' at'                    
+  50       OK     279        ' the'                    279        ' the'                   
+  51       OK     36400      ' farmer'                 36400      ' farmer'                
+  52       OK     748        '’s'                      748        '’s'                     
+  53       OK     3081       ' market'                 3081       ' market'                
+  54       OK     624        '.\n'                     624        '.\n'                    
+  55       OK     820        '####'                    820        '####'                   
+  56       OK     220        ' '                       220        ' '                      
+  57       OK     16         '1'                       16         '1'                      
+  58       OK     23         '8'                       23         '8'                      
+  59       OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+     Janet sells 16 - 3 - 4 = <<16-3-4=9>>9 duck eggs a day.
+    She makes 9 * 2 = $<<9*2=18>>18 every day at the farmer’s market.
+    #### 18<|im_end|>
+
+  SGL full text:
+     Janet sells 16 - 3 - 4 = <<16-3-4=9>>9 duck eggs a day.
+    She makes 9 * 2 = $<<9*2=18>>18 every day at the farmer’s market.
+    #### 18
+
+
+====================================================================================================
+[GSM8K Q1 (template): A robe takes 2 bolts of blue fiber and half that much white ]
+  HF  generated: 48 tokens
+  SGL generated: 48 tokens
+  First divergence position: NONE (all identical)
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     2132       'It'                      2132       'It'                     
+  1        OK     4990       ' takes'                  4990       ' takes'                 
+  2        OK     220        ' '                       220        ' '                      
+  3        OK     17         '2'                       17         '2'                      
+  4        OK     14         '/'                       14         '/'                      
+  5        OK     17         '2'                       17         '2'                      
+  6        OK     28         '='                       28         '='                      
+  7        OK     2442       '<<'                      2442       '<<'                     
+  8        OK     17         '2'                       17         '2'                      
+  9        OK     14         '/'                       14         '/'                      
+  10       OK     17         '2'                       17         '2'                      
+  11       OK     28         '='                       28         '='                      
+  12       OK     16         '1'                       16         '1'                      
+  13       OK     2452       '>>'                      2452       '>>'                     
+  14       OK     16         '1'                       16         '1'                      
+  15       OK     31842      ' bolt'                   31842      ' bolt'                  
+  16       OK     315        ' of'                     315        ' of'                    
+  17       OK     4158       ' white'                  4158       ' white'                 
+  18       OK     23788      ' fiber'                  23788      ' fiber'                 
+  19       OK     198        '\n'                      198        '\n'                     
+  20       OK     4416       'So'                      4416       'So'                     
+  21       OK     279        ' the'                    279        ' the'                   
+  22       OK     2790       ' total'                  2790       ' total'                 
+  23       OK     3311       ' amount'                 3311       ' amount'                
+  24       OK     315        ' of'                     315        ' of'                    
+  25       OK     13055      ' fabric'                 13055      ' fabric'                
+  26       OK     374        ' is'                     374        ' is'                    
+  27       OK     220        ' '                       220        ' '                      
+  28       OK     17         '2'                       17         '2'                      
+  29       OK     10         '+'                       10         '+'                      
+  30       OK     16         '1'                       16         '1'                      
+  31       OK     28         '='                       28         '='                      
+  32       OK     2442       '<<'                      2442       '<<'                     
+  33       OK     17         '2'                       17         '2'                      
+  34       OK     10         '+'                       10         '+'                      
+  35       OK     16         '1'                       16         '1'                      
+  36       OK     28         '='                       28         '='                      
+  37       OK     18         '3'                       18         '3'                      
+  38       OK     2452       '>>'                      2452       '>>'                     
+  39       OK     18         '3'                       18         '3'                      
+  40       OK     48839      ' bolts'                  48839      ' bolts'                 
+  41       OK     315        ' of'                     315        ' of'                    
+  42       OK     13055      ' fabric'                 13055      ' fabric'                
+  43       OK     198        '\n'                      198        '\n'                     
+  44       OK     820        '####'                    820        '####'                   
+  45       OK     220        ' '                       220        ' '                      
+  46       OK     18         '3'                       18         '3'                      
+  47       OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+    It takes 2/2=<<2/2=1>>1 bolt of white fiber
+    So the total amount of fabric is 2+1=<<2+1=3>>3 bolts of fabric
+    #### 3<|im_end|>
+
+  SGL full text:
+    It takes 2/2=<<2/2=1>>1 bolt of white fiber
+    So the total amount of fabric is 2+1=<<2+1=3>>3 bolts of fabric
+    #### 3
+
+
+====================================================================================================
+[GSM8K Q2 (template): Josh decides to try flipping a house.  He buys a house for $]
+  HF  generated: 213 tokens
+  SGL generated: 139 tokens
+  First divergence position: 10
+  Match rate: 46/139 = 33.1%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     2783       ' cost'                   2783       ' cost'                  
+  2        OK     315        ' of'                     315        ' of'                    
+  3        OK     279        ' the'                    279        ' the'                   
+  4        OK     3753       ' house'                  3753       ' house'                 
+  5        OK     323        ' and'                    323        ' and'                   
+  6        OK     30186      ' repairs'                30186      ' repairs'               
+  7        OK     3697       ' came'                   3697       ' came'                  
+  8        OK     700        ' out'                    700        ' out'                   
+  9        OK     311        ' to'                     311        ' to'                    
+  10     >>DIFF   220        ' '                       400        ' $'                     
+  11       OK     23         '8'                       23         '8'                      
+  12       OK     15         '0'                       15         '0'                      
+  13       OK     11         ','                       11         ','                      
+  14       OK     15         '0'                       15         '0'                      
+  15       OK     15         '0'                       15         '0'                      
+  16       OK     15         '0'                       15         '0'                      
+  17       diff   10         '+'                       488        ' +'                     
+  18       diff   20         '5'                       400        ' $'                     
+  19       diff   15         '0'                       20         '5'                      
+  20       diff   11         ','                       15         '0'                      
+  21       diff   15         '0'                       11         ','                      
+  22       OK     15         '0'                       15         '0'                      
+  23       OK     15         '0'                       15         '0'                      
+  24       diff   3186       '=$'                      15         '0'                      
+  25       diff   2442       '<<'                      284        ' ='                     
+  26       diff   23         '8'                       400        ' $'                     
+  27       diff   15         '0'                       16         '1'                      
+  28       diff   15         '0'                       18         '3'                      
+  29       OK     15         '0'                       15         '0'                      
+  30       diff   15         '0'                       11         ','                      
+  31       diff   10         '+'                       15         '0'                      
+  32       diff   20         '5'                       15         '0'                      
+  33       OK     15         '0'                       15         '0'                      
+  34       diff   15         '0'                       198        '\n'                     
+  35       diff   15         '0'                       1519       'He'                     
+  36       diff   15         '0'                       7172       ' increased'             
+  37       diff   28         '='                       279        ' the'                   
+  38       diff   16         '1'                       897        ' value'                 
+  39       diff   18         '3'                       315        ' of'                    
+  40       diff   15         '0'                       279        ' the'                   
+  41       diff   15         '0'                       3753       ' house'                 
+  42       diff   15         '0'                       553        ' by'                    
+  43       diff   15         '0'                       400        ' $'                     
+  44       diff   2452       '>>'                      23         '8'                      
+  45       diff   16         '1'                       15         '0'                      
+  46       diff   18         '3'                       11         ','                      
+  47       OK     15         '0'                       15         '0'                      
+  48       diff   11         ','                       15         '0'                      
+  49       OK     15         '0'                       15         '0'                      
+  50       diff   15         '0'                       353        ' *'                     
+  51       diff   15         '0'                       220        ' '                      
+  52       diff   198        '\n'                      16         '1'                      
+  53       diff   1519       'He'                      13         '.'                      
+  54       diff   7172       ' increased'              20         '5'                      
+  55       diff   279        ' the'                    284        ' ='                     
+  56       diff   897        ' value'                  400        ' $'                     
+  57       diff   315        ' of'                     16         '1'                      
+  58       diff   279        ' the'                    17         '2'                      
+  59       diff   3753       ' house'                  15         '0'                      
+  60       diff   553        ' by'                     11         ','                      
+  61       diff   220        ' '                       15         '0'                      
+  62       diff   23         '8'                       15         '0'                      
+  63       OK     15         '0'                       15         '0'                      
+  64       diff   11         ','                       198        '\n'                     
+  65       diff   15         '0'                       4416       'So'                     
+  66       diff   15         '0'                       279        ' the'                   
+  67       diff   15         '0'                       501        ' new'                   
+  68       diff   9          '*'                       897        ' value'                 
+  69       diff   16         '1'                       315        ' of'                    
+  70       diff   13         '.'                       279        ' the'                   
+  71       diff   20         '5'                       3753       ' house'                 
+  72       diff   28         '='                       374        ' is'                    
+  73       diff   2442       '<<'                      400        ' $'                     
+  74       diff   23         '8'                       16         '1'                      
+  75       diff   15         '0'                       17         '2'                      
+  76       OK     15         '0'                       15         '0'                      
+  77       diff   15         '0'                       11         ','                      
+  78       OK     15         '0'                       15         '0'                      
+  79       diff   9          '*'                       15         '0'                      
+  80       diff   16         '1'                       15         '0'                      
+  81       diff   13         '.'                       488        ' +'                     
+  82       diff   20         '5'                       400        ' $'                     
+  83       diff   28         '='                       23         '8'                      
+  84       diff   16         '1'                       15         '0'                      
+  85       diff   17         '2'                       11         ','                      
+  86       OK     15         '0'                       15         '0'                      
+  87       OK     15         '0'                       15         '0'                      
+  88       OK     15         '0'                       15         '0'                      
+  89       diff   15         '0'                       284        ' ='                     
+  90       diff   2452       '>>'                      400        ' $'                     
+  91       diff   16         '1'                       17         '2'                      
+  92       diff   17         '2'                       15         '0'                      
+  93       OK     15         '0'                       15         '0'                      
+  94       OK     11         ','                       11         ','                      
+  95       OK     15         '0'                       15         '0'                      
+  96       OK     15         '0'                       15         '0'                      
+  97       OK     15         '0'                       15         '0'                      
+  98       OK     198        '\n'                      198        '\n'                     
+  99       OK     4416       'So'                      4416       'So'                     
+  100      diff   279        ' the'                    566        ' he'                    
+  101      diff   501        ' new'                    1865       ' made'                  
+  102      diff   897        ' value'                  264        ' a'                     
+  103      diff   315        ' of'                     11372      ' profit'                
+  104      diff   279        ' the'                    315        ' of'                    
+  105      diff   3753       ' house'                  400        ' $'                     
+  106      diff   374        ' is'                     17         '2'                      
+  107      diff   220        ' '                       15         '0'                      
+  108      diff   17         '2'                       15         '0'                      
+  109      diff   17         '2'                       11         ','                      
+  110      OK     15         '0'                       15         '0'                      
+  111      diff   11         ','                       15         '0'                      
+  112      OK     15         '0'                       15         '0'                      
+  113      diff   15         '0'                       481        ' -'                     
+  114      diff   15         '0'                       400        ' $'                     
+  115      diff   12         '-'                       16         '1'                      
+  116      diff   16         '1'                       18         '3'                      
+  117      diff   18         '3'                       15         '0'                      
+  118      diff   15         '0'                       11         ','                      
+  119      diff   11         ','                       15         '0'                      
+  120      OK     15         '0'                       15         '0'                      
+  121      OK     15         '0'                       15         '0'                      
+  122      diff   15         '0'                       284        ' ='                     
+  123      diff   3186       '=$'                      400        ' $'                     
+  124      diff   2442       '<<'                      22         '7'                      
+  125      diff   17         '2'                       15         '0'                      
+  126      diff   17         '2'                       11         ','                      
+  127      OK     15         '0'                       15         '0'                      
+  128      OK     15         '0'                       15         '0'                      
+  129      OK     15         '0'                       15         '0'                      
+  130      diff   15         '0'                       198        '\n'                     
+  131      diff   12         '-'                       820        '####'                   
+  132      diff   16         '1'                       220        ' '                      
+  133      diff   18         '3'                       22         '7'                      
+  134      OK     15         '0'                       15         '0'                      
+  135      OK     15         '0'                       15         '0'                      
+  136      OK     15         '0'                       15         '0'                      
+  137      OK     15         '0'                       15         '0'                      
+  138      diff   28         '='                       151645     '<|im_end|>'             
+  139      diff   24         '9'                       ---        ---                      
+  140      diff   15         '0'                       ---        ---                      
+  141      diff   15         '0'                       ---        ---                      
+  142      diff   15         '0'                       ---        ---                      
+  143      diff   15         '0'                       ---        ---                      
+  144      diff   15         '0'                       ---        ---                      
+  145      diff   2452       '>>'                      ---        ---                      
+  146      diff   24         '9'                       ---        ---                      
+  147      diff   15         '0'                       ---        ---                      
+  148      diff   11         ','                       ---        ---                      
+  149      diff   15         '0'                       ---        ---                      
+  150      diff   15         '0'                       ---        ---                      
+  151      diff   15         '0'                       ---        ---                      
+  152      diff   198        '\n'                      ---        ---                      
+  153      diff   4416       'So'                      ---        ---                      
+  154      diff   566        ' he'                     ---        ---                      
+  155      diff   1865       ' made'                   ---        ---                      
+  156      diff   264        ' a'                      ---        ---                      
+  157      diff   11372      ' profit'                 ---        ---                      
+  158      diff   315        ' of'                     ---        ---                      
+  159      diff   220        ' '                       ---        ---                      
+  160      diff   24         '9'                       ---        ---                      
+  161      diff   15         '0'                       ---        ---                      
+  162      diff   11         ','                       ---        ---                      
+  163      diff   15         '0'                       ---        ---                      
+  164      diff   15         '0'                       ---        ---                      
+  165      diff   15         '0'                       ---        ---                      
+  166      diff   12         '-'                       ---        ---                      
+  167      diff   16         '1'                       ---        ---                      
+  168      diff   18         '3'                       ---        ---                      
+  169      diff   15         '0'                       ---        ---                      
+  170      diff   11         ','                       ---        ---                      
+  171      diff   15         '0'                       ---        ---                      
+  172      diff   15         '0'                       ---        ---                      
+  173      diff   15         '0'                       ---        ---                      
+  174      diff   3186       '=$'                      ---        ---                      
+  175      diff   2442       '<<'                      ---        ---                      
+  176      diff   24         '9'                       ---        ---                      
+  177      diff   15         '0'                       ---        ---                      
+  178      diff   15         '0'                       ---        ---                      
+  179      diff   15         '0'                       ---        ---                      
+  180      diff   15         '0'                       ---        ---                      
+  181      diff   12         '-'                       ---        ---                      
+  182      diff   16         '1'                       ---        ---                      
+  183      diff   18         '3'                       ---        ---                      
+  184      diff   15         '0'                       ---        ---                      
+  185      diff   15         '0'                       ---        ---                      
+  186      diff   15         '0'                       ---        ---                      
+  187      diff   15         '0'                       ---        ---                      
+  188      diff   10829      '=-'                      ---        ---                      
+  189      diff   19         '4'                       ---        ---                      
+  190      diff   15         '0'                       ---        ---                      
+  191      diff   15         '0'                       ---        ---                      
+  192      diff   15         '0'                       ---        ---                      
+  193      diff   15         '0'                       ---        ---                      
+  194      diff   15         '0'                       ---        ---                      
+  195      diff   2452       '>>'                      ---        ---                      
+  196      diff   12         '-'                       ---        ---                      
+  197      diff   19         '4'                       ---        ---                      
+  198      diff   15         '0'                       ---        ---                      
+  199      diff   11         ','                       ---        ---                      
+  200      diff   15         '0'                       ---        ---                      
+  201      diff   15         '0'                       ---        ---                      
+  202      diff   15         '0'                       ---        ---                      
+  203      diff   198        '\n'                      ---        ---                      
+  204      diff   820        '####'                    ---        ---                      
+  205      diff   481        ' -'                      ---        ---                      
+  206      diff   19         '4'                       ---        ---                      
+  207      diff   15         '0'                       ---        ---                      
+  208      diff   15         '0'                       ---        ---                      
+  209      diff   15         '0'                       ---        ---                      
+  210      diff   15         '0'                       ---        ---                      
+  211      diff   15         '0'                       ---        ---                      
+  212      diff   151645     '<|im_end|>'              ---        ---                      
+
+  HF  full text:
+    The cost of the house and repairs came out to 80,000+50,000=$<<80000+50000=130000>>130,000
+    He increased the value of the house by 80,000*1.5=<<80000*1.5=120000>>120,000
+    So the new value of the house is 220,000-130,000=$<<220000-130000=900000>>90,000
+    So he made a profit of 90,000-130,000=$<<90000-130000=-400000>>-40,000
+    #### -400000<|im_end|>
+
+  SGL full text:
+    The cost of the house and repairs came out to $80,000 + $50,000 = $130,000
+    He increased the value of the house by $80,000 * 1.5 = $120,000
+    So the new value of the house is $120,000 + $80,000 = $200,000
+    So he made a profit of $200,000 - $130,000 = $70,000
+    #### 70000
+
+
+====================================================================================================
+[GSM8K Q3 (template): James decides to run 3 sprints 3 times a week.  He runs 60 m]
+  HF  generated: 48 tokens
+  SGL generated: 48 tokens
+  First divergence position: NONE (all identical)
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     1519       'He'                      1519       'He'                     
+  1        OK     274        ' s'                      274        ' s'                     
+  2        OK     25738      'prints'                  25738      'prints'                 
+  3        OK     220        ' '                       220        ' '                      
+  4        OK     18         '3'                       18         '3'                      
+  5        OK     9          '*'                       9          '*'                      
+  6        OK     18         '3'                       18         '3'                      
+  7        OK     28         '='                       28         '='                      
+  8        OK     2442       '<<'                      2442       '<<'                     
+  9        OK     18         '3'                       18         '3'                      
+  10       OK     9          '*'                       9          '*'                      
+  11       OK     18         '3'                       18         '3'                      
+  12       OK     28         '='                       28         '='                      
+  13       OK     24         '9'                       24         '9'                      
+  14       OK     2452       '>>'                      2452       '>>'                     
+  15       OK     24         '9'                       24         '9'                      
+  16       OK     3039       ' times'                  3039       ' times'                 
+  17       OK     198        '\n'                      198        '\n'                     
+  18       OK     4416       'So'                      4416       'So'                     
+  19       OK     566        ' he'                     566        ' he'                    
+  20       OK     8473       ' runs'                   8473       ' runs'                  
+  21       OK     220        ' '                       220        ' '                      
+  22       OK     24         '9'                       24         '9'                      
+  23       OK     9          '*'                       9          '*'                      
+  24       OK     21         '6'                       21         '6'                      
+  25       OK     15         '0'                       15         '0'                      
+  26       OK     28         '='                       28         '='                      
+  27       OK     2442       '<<'                      2442       '<<'                     
+  28       OK     24         '9'                       24         '9'                      
+  29       OK     9          '*'                       9          '*'                      
+  30       OK     21         '6'                       21         '6'                      
+  31       OK     15         '0'                       15         '0'                      
+  32       OK     28         '='                       28         '='                      
+  33       OK     20         '5'                       20         '5'                      
+  34       OK     19         '4'                       19         '4'                      
+  35       OK     15         '0'                       15         '0'                      
+  36       OK     2452       '>>'                      2452       '>>'                     
+  37       OK     20         '5'                       20         '5'                      
+  38       OK     19         '4'                       19         '4'                      
+  39       OK     15         '0'                       15         '0'                      
+  40       OK     20044      ' meters'                 20044      ' meters'                
+  41       OK     198        '\n'                      198        '\n'                     
+  42       OK     820        '####'                    820        '####'                   
+  43       OK     220        ' '                       220        ' '                      
+  44       OK     20         '5'                       20         '5'                      
+  45       OK     19         '4'                       19         '4'                      
+  46       OK     15         '0'                       15         '0'                      
+  47       OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+    He sprints 3*3=<<3*3=9>>9 times
+    So he runs 9*60=<<9*60=540>>540 meters
+    #### 540<|im_end|>
+
+  SGL full text:
+    He sprints 3*3=<<3*3=9>>9 times
+    So he runs 9*60=<<9*60=540>>540 meters
+    #### 540
+
+
+====================================================================================================
+[GSM8K Q4 (template): Every day, Wendi feeds each of her chickens three cups of mi]
+  HF  generated: 109 tokens
+  SGL generated: 109 tokens
+  First divergence position: 0
+  Match rate: 108/109 = 99.1%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0      >>DIFF   1416       ' If'                     2679       'If'                     
+  1        OK     1817       ' each'                   1817       ' each'                  
+  2        OK     16158      ' chicken'                16158      ' chicken'               
+  3        OK     49677      ' eats'                   49677      ' eats'                  
+  4        OK     220        ' '                       220        ' '                      
+  5        OK     18         '3'                       18         '3'                      
+  6        OK     25374      ' cups'                   25374      ' cups'                  
+  7        OK     315        ' of'                     315        ' of'                    
+  8        OK     5395       ' feed'                   5395       ' feed'                  
+  9        OK     817        ' per'                    817        ' per'                   
+  10       OK     1899       ' day'                    1899       ' day'                   
+  11       OK     11         ','                       11         ','                      
+  12       OK     1221       ' then'                   1221       ' then'                  
+  13       OK     369        ' for'                    369        ' for'                   
+  14       OK     220        ' '                       220        ' '                      
+  15       OK     17         '2'                       17         '2'                      
+  16       OK     15         '0'                       15         '0'                      
+  17       OK     53523      ' chickens'               53523      ' chickens'              
+  18       OK     807        ' they'                   807        ' they'                  
+  19       OK     1035       ' would'                  1035       ' would'                 
+  20       OK     1184       ' need'                   1184       ' need'                  
+  21       OK     220        ' '                       220        ' '                      
+  22       OK     18         '3'                       18         '3'                      
+  23       OK     9          '*'                       9          '*'                      
+  24       OK     17         '2'                       17         '2'                      
+  25       OK     15         '0'                       15         '0'                      
+  26       OK     28         '='                       28         '='                      
+  27       OK     2442       '<<'                      2442       '<<'                     
+  28       OK     18         '3'                       18         '3'                      
+  29       OK     9          '*'                       9          '*'                      
+  30       OK     17         '2'                       17         '2'                      
+  31       OK     15         '0'                       15         '0'                      
+  32       OK     28         '='                       28         '='                      
+  33       OK     21         '6'                       21         '6'                      
+  34       OK     15         '0'                       15         '0'                      
+  35       OK     2452       '>>'                      2452       '>>'                     
+  36       OK     21         '6'                       21         '6'                      
+  37       OK     15         '0'                       15         '0'                      
+  38       OK     25374      ' cups'                   25374      ' cups'                  
+  39       OK     315        ' of'                     315        ' of'                    
+  40       OK     5395       ' feed'                   5395       ' feed'                  
+  41       OK     817        ' per'                    817        ' per'                   
+  42       OK     1899       ' day'                    1899       ' day'                   
+  43       OK     624        '.\n'                     624        '.\n'                    
+  44       OK     2679       'If'                      2679       'If'                     
+  45       OK     1340       ' she'                    1340       ' she'                   
+  46       OK     34396      ' feeds'                  34396      ' feeds'                 
+  47       OK     279        ' the'                    279        ' the'                   
+  48       OK     48716      ' flock'                  48716      ' flock'                 
+  49       OK     220        ' '                       220        ' '                      
+  50       OK     16         '1'                       16         '1'                      
+  51       OK     20         '5'                       20         '5'                      
+  52       OK     25374      ' cups'                   25374      ' cups'                  
+  53       OK     315        ' of'                     315        ' of'                    
+  54       OK     5395       ' feed'                   5395       ' feed'                  
+  55       OK     304        ' in'                     304        ' in'                    
+  56       OK     279        ' the'                    279        ' the'                   
+  57       OK     6556       ' morning'                6556       ' morning'               
+  58       OK     11         ','                       11         ','                      
+  59       OK     323        ' and'                    323        ' and'                   
+  60       OK     220        ' '                       220        ' '                      
+  61       OK     17         '2'                       17         '2'                      
+  62       OK     20         '5'                       20         '5'                      
+  63       OK     25374      ' cups'                   25374      ' cups'                  
+  64       OK     304        ' in'                     304        ' in'                    
+  65       OK     279        ' the'                    279        ' the'                   
+  66       OK     13354      ' afternoon'              13354      ' afternoon'             
+  67       OK     11         ','                       11         ','                      
+  68       OK     1221       ' then'                   1221       ' then'                  
+  69       OK     279        ' the'                    279        ' the'                   
+  70       OK     1590       ' final'                  1590       ' final'                 
+  71       OK     15145      ' meal'                   15145      ' meal'                  
+  72       OK     1035       ' would'                  1035       ' would'                 
+  73       OK     1373       ' require'                1373       ' require'               
+  74       OK     220        ' '                       220        ' '                      
+  75       OK     21         '6'                       21         '6'                      
+  76       OK     15         '0'                       15         '0'                      
+  77       OK     12         '-'                       12         '-'                      
+  78       OK     16         '1'                       16         '1'                      
+  79       OK     20         '5'                       20         '5'                      
+  80       OK     12         '-'                       12         '-'                      
+  81       OK     17         '2'                       17         '2'                      
+  82       OK     20         '5'                       20         '5'                      
+  83       OK     28         '='                       28         '='                      
+  84       OK     2442       '<<'                      2442       '<<'                     
+  85       OK     21         '6'                       21         '6'                      
+  86       OK     15         '0'                       15         '0'                      
+  87       OK     12         '-'                       12         '-'                      
+  88       OK     16         '1'                       16         '1'                      
+  89       OK     20         '5'                       20         '5'                      
+  90       OK     12         '-'                       12         '-'                      
+  91       OK     17         '2'                       17         '2'                      
+  92       OK     20         '5'                       20         '5'                      
+  93       OK     28         '='                       28         '='                      
+  94       OK     17         '2'                       17         '2'                      
+  95       OK     15         '0'                       15         '0'                      
+  96       OK     2452       '>>'                      2452       '>>'                     
+  97       OK     17         '2'                       17         '2'                      
+  98       OK     15         '0'                       15         '0'                      
+  99       OK     25374      ' cups'                   25374      ' cups'                  
+  100      OK     315        ' of'                     315        ' of'                    
+  101      OK     16158      ' chicken'                16158      ' chicken'               
+  102      OK     5395       ' feed'                   5395       ' feed'                  
+  103      OK     624        '.\n'                     624        '.\n'                    
+  104      OK     820        '####'                    820        '####'                   
+  105      OK     220        ' '                       220        ' '                      
+  106      OK     17         '2'                       17         '2'                      
+  107      OK     15         '0'                       15         '0'                      
+  108      OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+     If each chicken eats 3 cups of feed per day, then for 20 chickens they would need 3*20=<<3*20=60>>60 cups of feed per day.
+    If she feeds the flock 15 cups of feed in the morning, and 25 cups in the afternoon, then the final meal would require 60-15-25=<<60-15-25=20>>20 cups of chicken feed.
+    #### 20<|im_end|>
+
+  SGL full text:
+    If each chicken eats 3 cups of feed per day, then for 20 chickens they would need 3*20=<<3*20=60>>60 cups of feed per day.
+    If she feeds the flock 15 cups of feed in the morning, and 25 cups in the afternoon, then the final meal would require 60-15-25=<<60-15-25=20>>20 cups of chicken feed.
+    #### 20
+
+
+====================================================================================================
+[Simple Q0 (template): What is 1+1?]
+  HF  generated: 12 tokens
+  SGL generated: 12 tokens
+  First divergence position: NONE (all identical)
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     4226       ' answer'                 4226       ' answer'                
+  2        OK     311        ' to'                     311        ' to'                    
+  3        OK     220        ' '                       220        ' '                      
+  4        OK     16         '1'                       16         '1'                      
+  5        OK     10         '+'                       10         '+'                      
+  6        OK     16         '1'                       16         '1'                      
+  7        OK     374        ' is'                     374        ' is'                    
+  8        OK     220        ' '                       220        ' '                      
+  9        OK     17         '2'                       17         '2'                      
+  10       OK     13         '.'                       13         '.'                      
+  11       OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+    The answer to 1+1 is 2.<|im_end|>
+
+  SGL full text:
+    The answer to 1+1 is 2.
+
+
+====================================================================================================
+[Simple Q1 (template): What is the capital of France?]
+  HF  generated: 8 tokens
+  SGL generated: 6 tokens
+  First divergence position: 5
+  Match rate: 5/6 = 83.3%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     6722       ' capital'                6722       ' capital'               
+  2        OK     315        ' of'                     315        ' of'                    
+  3        OK     9625       ' France'                 9625       ' France'                
+  4        OK     374        ' is'                     374        ' is'                    
+  5      >>DIFF   12095      ' Paris'                  151645     '<|im_end|>'             
+  6        diff   13         '.'                       ---        ---                      
+  7        diff   151645     '<|im_end|>'              ---        ---                      
+
+  HF  full text:
+    The capital of France is Paris.<|im_end|>
+
+  SGL full text:
+    The capital of France is
+
+
+====================================================================================================
+[Simple Q2 (template): What color is the sky?]
+  HF  generated: 91 tokens
+  SGL generated: 115 tokens
+  First divergence position: 8
+  Match rate: 11/91 = 12.1%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     12884      ' sky'                    12884      ' sky'                   
+  2        OK     374        ' is'                     374        ' is'                    
+  3        OK     11136      ' typically'              11136      ' typically'             
+  4        OK     6303       ' blue'                   6303       ' blue'                  
+  5        OK     2337       ' during'                 2337       ' during'                
+  6        OK     279        ' the'                    279        ' the'                   
+  7        OK     1899       ' day'                    1899       ' day'                   
+  8      >>DIFF   4152       ' due'                    11         ','                      
+  9        diff   311        ' to'                     5310       ' especially'            
+  10       diff   279        ' the'                    2337       ' during'                
+  11       diff   71816      ' scattering'             39698      ' sunny'                 
+  12       diff   315        ' of'                     2849       ' days'                  
+  13       diff   39020      ' sunlight'               13         '.'                      
+  14       diff   553        ' by'                     1096       ' This'                  
+  15       diff   279        ' the'                    374        ' is'                    
+  16       diff   9237       ' Earth'                  1576       ' because'               
+  17       diff   594        "'s"                      279        ' the'                   
+  18       diff   16566      ' atmosphere'             9237       ' Earth'                 
+  19       diff   13         '.'                       594        "'s"                     
+  20       diff   1096       ' This'                   16566      ' atmosphere'            
+  21       diff   24844      ' phenomenon'             1136       ' sc'                    
+  22       diff   374        ' is'                     10175      'atters'                 
+  23       diff   3881       ' known'                  39020      ' sunlight'              
+  24       diff   438        ' as'                     304        ' in'                    
+  25       diff   13255      ' Ray'                    678        ' all'                   
+  26       diff   62969      'leigh'                   17961      ' directions'            
+  27       diff   71816      ' scattering'             11         ','                      
+  28       diff   11         ','                       323        ' and'                   
+  29       diff   1380       ' where'                  279        ' the'                   
+  30       OK     23327      ' shorter'                23327      ' shorter'               
+  31       diff   92859      ' wavelengths'            320        ' ('                     
+  32       diff   315        ' of'                     12203      'blue'                   
+  33       diff   3100       ' light'                  8          ')'                      
+  34       diff   11         ','                       8          ')'                      
+  35       diff   1075       ' like'                   92859      ' wavelengths'           
+  36       diff   6303       ' blue'                   315        ' of'                    
+  37       diff   323        ' and'                    3100       ' light'                 
+  38       diff   11         ','                       525        ' are'                   
+  39       diff   525        ' are'                    36967      ' scattered'             
+  40       diff   36967      ' scattered'              803        ' more'                  
+  41       diff   803        ' more'                   1091       ' than'                  
+  42       diff   1091       ' than'                   279        ' the'                   
+  43       OK     5021       ' longer'                 5021       ' longer'                
+  44       diff   92859      ' wavelengths'            320        ' ('                     
+  45       diff   11         ','                       1151       'red'                    
+  46       diff   1075       ' like'                   8          ')'                      
+  47       diff   2518       ' red'                    92859      ' wavelengths'           
+  48       diff   323        ' and'                    13         '.'                      
+  49       diff   6176       ' green'                  1096       ' This'                  
+  50       diff   13         '.'                       3059       ' results'               
+  51       diff   4354       ' However'                304        ' in'                    
+  52       diff   11         ','                       279        ' the'                   
+  53       diff   279        ' the'                    12884      ' sky'                   
+  54       diff   12884      ' sky'                    25377      ' appearing'             
+  55       diff   646        ' can'                    6303       ' blue'                  
+  56       diff   4994       ' appear'                 13         '.'                      
+  57       diff   2155       ' different'              4354       ' However'               
+  58       diff   7987       ' colors'                 11         ','                      
+  59       diff   518        ' at'                     279        ' the'                   
+  60       diff   63819      ' sunrise'                1894       ' color'                 
+  61       diff   323        ' and'                    315        ' of'                    
+  62       diff   42984      ' sunset'                 279        ' the'                   
+  63       diff   11         ','                       12884      ' sky'                   
+  64       diff   1741       ' such'                   646        ' can'                   
+  65       diff   438        ' as'                     2297       ' change'                
+  66       diff   18217      ' pink'                   11649      ' depending'             
+  67       diff   11         ','                       389        ' on'                    
+  68       diff   18575      ' orange'                 279        ' the'                   
+  69       diff   11         ','                       882        ' time'                  
+  70       diff   323        ' and'                    315        ' of'                    
+  71       diff   2518       ' red'                    1899       ' day'                   
+  72       OK     11         ','                       11         ','                      
+  73       diff   4152       ' due'                    9104       ' weather'               
+  74       diff   311        ' to'                     4682       ' conditions'            
+  75       diff   279        ' the'                    11         ','                      
+  76       diff   5021       ' longer'                 323        ' and'                   
+  77       diff   1815       ' path'                   1008       ' other'                 
+  78       diff   315        ' of'                     9363       ' factors'               
+  79       diff   3100       ' light'                  13         '.'                      
+  80       diff   1526       ' through'                1752       ' For'                   
+  81       diff   279        ' the'                    3110       ' example'               
+  82       diff   16566      ' atmosphere'             11         ','                      
+  83       diff   323        ' and'                    279        ' the'                   
+  84       diff   279        ' the'                    7015       ' sun'                   
+  85       diff   71816      ' scattering'             37168      ' rises'                 
+  86       diff   315        ' of'                     323        ' and'                   
+  87       diff   23327      ' shorter'                7289       ' sets'                  
+  88       diff   92859      ' wavelengths'            11         ','                      
+  89       diff   13         '.'                       279        ' the'                   
+  90       diff   151645     '<|im_end|>'              12884      ' sky'                   
+  91       diff   ---        ---                       646        ' can'                   
+  92       diff   ---        ---                       4994       ' appear'                
+  93       diff   ---        ---                       18217      ' pink'                  
+  94       diff   ---        ---                       11         ','                      
+  95       diff   ---        ---                       18575      ' orange'                
+  96       diff   ---        ---                       11         ','                      
+  97       diff   ---        ---                       476        ' or'                    
+  98       diff   ---        ---                       2518       ' red'                   
+  99       diff   ---        ---                       13         '.'                      
+  100      diff   ---        ---                       22406      ' Additionally'          
+  101      diff   ---        ---                       11         ','                      
+  102      diff   ---        ---                       2337       ' during'                
+  103      diff   ---        ---                       73549      ' cloudy'                
+  104      diff   ---        ---                       2849       ' days'                  
+  105      diff   ---        ---                       11         ','                      
+  106      diff   ---        ---                       279        ' the'                   
+  107      diff   ---        ---                       12884      ' sky'                   
+  108      diff   ---        ---                       646        ' can'                   
+  109      diff   ---        ---                       4994       ' appear'                
+  110      diff   ---        ---                       17545      ' gray'                  
+  111      diff   ---        ---                       476        ' or'                    
+  112      diff   ---        ---                       4158       ' white'                 
+  113      diff   ---        ---                       13         '.'                      
+  114      diff   ---        ---                       151645     '<|im_end|>'             
+
+  HF  full text:
+    The sky is typically blue during the day due to the scattering of sunlight by the Earth's atmosphere. This phenomenon is known as Rayleigh scattering, where shorter wavelengths of light, like blue and, are scattered more than longer wavelengths, like red and green. However, the sky can appear different colors at sunrise and sunset, such as pink, orange, and red, due to the longer path of light through the atmosphere and the scattering of shorter wavelengths.<|im_end|>
+
+  SGL full text:
+    The sky is typically blue during the day, especially during sunny days. This is because the Earth's atmosphere scatters sunlight in all directions, and the shorter (blue)) wavelengths of light are scattered more than the longer (red) wavelengths. This results in the sky appearing blue. However, the color of the sky can change depending on the time of day, weather conditions, and other factors. For example, the sun rises and sets, the sky can appear pink, orange, or red. Additionally, during cloudy days, the sky can appear gray or white.
+
+
+====================================================================================================
+[Simple Q3 (template): How many days are in a week?]
+  HF  generated: 10 tokens
+  SGL generated: 9 tokens
+  First divergence position: 0
+  Match rate: 0/9 = 0.0%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0      >>DIFF   3862       'There'                   32         'A'                      
+  1        diff   525        ' are'                    2003       ' week'                  
+  2        diff   220        ' '                       17167      ' consists'              
+  3        diff   22         '7'                       315        ' of'                    
+  4        diff   2849       ' days'                   220        ' '                      
+  5        diff   304        ' in'                     22         '7'                      
+  6        diff   264        ' a'                      2849       ' days'                  
+  7        diff   2003       ' week'                   13         '.'                      
+  8        diff   13         '.'                       151645     '<|im_end|>'             
+  9        diff   151645     '<|im_end|>'              ---        ---                      
+
+  HF  full text:
+    There are 7 days in a week.<|im_end|>
+
+  SGL full text:
+    A week consists of 7 days.
+
+
+====================================================================================================
+[Simple Q4 (template): What is 2 * 3 + 4?]
+  HF  generated: 48 tokens
+  SGL generated: 54 tokens
+  First divergence position: 17
+  Match rate: 17/48 = 35.4%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     4226       ' answer'                 4226       ' answer'                
+  2        OK     374        ' is'                     374        ' is'                    
+  3        OK     220        ' '                       220        ' '                      
+  4        OK     16         '1'                       16         '1'                      
+  5        OK     15         '0'                       15         '0'                      
+  6        OK     13         '.'                       13         '.'                      
+  7        OK     10548      ' According'              10548      ' According'             
+  8        OK     311        ' to'                     311        ' to'                    
+  9        OK     279        ' the'                    279        ' the'                   
+  10       OK     1973       ' order'                  1973       ' order'                 
+  11       OK     315        ' of'                     315        ' of'                    
+  12       OK     7525       ' operations'             7525       ' operations'            
+  13       OK     11         ','                       11         ','                      
+  14       OK     498        ' you'                    498        ' you'                   
+  15       OK     1265       ' should'                 1265       ' should'                
+  16       OK     2736       ' perform'                2736       ' perform'               
+  17     >>DIFF   46444      ' multiplication'         279        ' the'                   
+  18       diff   1573       ' before'                 46444      ' multiplication'        
+  19       diff   5256       ' addition'               1573       ' before'                
+  20       diff   13         '.'                       279        ' the'                   
+  21       diff   2055       ' So'                     5256       ' addition'              
+  22       diff   11         ','                       13         '.'                      
+  23       diff   498        ' you'                    2055       ' So'                    
+  24       diff   1156       ' first'                  11         ','                      
+  25       diff   30270      ' multiply'               498        ' you'                   
+  26       diff   220        ' '                       1035       ' would'                 
+  27       diff   17         '2'                       11047      ' calculate'             
+  28       diff   323        ' and'                    220        ' '                      
+  29       diff   220        ' '                       17         '2'                      
+  30       diff   18         '3'                       353        ' *'                     
+  31       diff   311        ' to'                     220        ' '                      
+  32       diff   633        ' get'                    18         '3'                      
+  33       diff   220        ' '                       11         ','                      
+  34       diff   21         '6'                       892        ' which'                 
+  35       diff   11         ','                       16819      ' equals'                
+  36       diff   323        ' and'                    220        ' '                      
+  37       diff   1221       ' then'                   21         '6'                      
+  38       diff   912        ' add'                    11         ','                      
+  39       diff   220        ' '                       323        ' and'                   
+  40       diff   19         '4'                       1221       ' then'                  
+  41       diff   311        ' to'                     912        ' add'                   
+  42       diff   633        ' get'                    220        ' '                      
+  43       diff   220        ' '                       19         '4'                      
+  44       diff   16         '1'                       311        ' to'                    
+  45       diff   15         '0'                       429        ' that'                  
+  46       diff   13         '.'                       11         ','                      
+  47       diff   151645     '<|im_end|>'              12942      ' resulting'             
+  48       diff   ---        ---                       304        ' in'                    
+  49       diff   ---        ---                       220        ' '                      
+  50       diff   ---        ---                       16         '1'                      
+  51       diff   ---        ---                       15         '0'                      
+  52       diff   ---        ---                       13         '.'                      
+  53       diff   ---        ---                       151645     '<|im_end|>'             
+
+  HF  full text:
+    The answer is 10. According to the order of operations, you should perform multiplication before addition. So, you first multiply 2 and 3 to get 6, and then add 4 to get 10.<|im_end|>
+
+  SGL full text:
+    The answer is 10. According to the order of operations, you should perform the multiplication before the addition. So, you would calculate 2 * 3, which equals 6, and then add 4 to that, resulting in 10.
+
+
+====================================================================================================
+[Simple Q5 (template): Who wrote Romeo and Juliet?]
+  HF  generated: 11 tokens
+  SGL generated: 11 tokens
+  First divergence position: 2
+  Match rate: 10/11 = 90.9%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     49         'R'                       49         'R'                      
+  1        OK     635        'ome'                     635        'ome'                    
+  2      >>DIFF   78         'o'                       323        ' and'                   
+  3        OK     71024      ' Juliet'                 71024      ' Juliet'                
+  4        OK     572        ' was'                    572        ' was'                   
+  5        OK     5326       ' written'                5326       ' written'               
+  6        OK     553        ' by'                     553        ' by'                    
+  7        OK     12375      ' William'                12375      ' William'               
+  8        OK     41382      ' Shakespeare'            41382      ' Shakespeare'           
+  9        OK     13         '.'                       13         '.'                      
+  10       OK     151645     '<|im_end|>'              151645     '<|im_end|>'             
+
+  HF  full text:
+    Romeo Juliet was written by William Shakespeare.<|im_end|>
+
+  SGL full text:
+    Rome and Juliet was written by William Shakespeare.
+
+
+====================================================================================================
+[Simple Q6 (template): What is the largest planet in our solar system?]
+  HF  generated: 78 tokens
+  SGL generated: 11 tokens
+  First divergence position: 10
+  Match rate: 10/11 = 90.9%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     785        'The'                     785        'The'                    
+  1        OK     7772       ' largest'                7772       ' largest'               
+  2        OK     11580      ' planet'                 11580      ' planet'                
+  3        OK     304        ' in'                     304        ' in'                    
+  4        OK     1039       ' our'                    1039       ' our'                   
+  5        OK     12941      ' solar'                  12941      ' solar'                 
+  6        OK     1849       ' system'                 1849       ' system'                
+  7        OK     374        ' is'                     374        ' is'                    
+  8        OK     49689      ' Jupiter'                49689      ' Jupiter'               
+  9        OK     13         '.'                       13         '.'                      
+  10     >>DIFF   1084       ' It'                     151645     '<|im_end|>'             
+  11       diff   374        ' is'                     ---        ---                      
+  12       diff   264        ' a'                      ---        ---                      
+  13       diff   6819       ' gas'                    ---        ---                      
+  14       diff   14538      ' giant'                  ---        ---                      
+  15       diff   448        ' with'                   ---        ---                      
+  16       diff   264        ' a'                      ---        ---                      
+  17       diff   23033      ' diameter'               ---        ---                      
+  18       diff   315        ' of'                     ---        ---                      
+  19       diff   13187      ' approximately'          ---        ---                      
+  20       diff   220        ' '                       ---        ---                      
+  21       diff   23         '8'                       ---        ---                      
+  22       diff   16         '1'                       ---        ---                      
+  23       diff   17         '2'                       ---        ---                      
+  24       diff   11         ','                       ---        ---                      
+  25       diff   15         '0'                       ---        ---                      
+  26       diff   15         '0'                       ---        ---                      
+  27       diff   15         '0'                       ---        ---                      
+  28       diff   8756       ' miles'                  ---        ---                      
+  29       diff   320        ' ('                      ---        ---                      
+  30       diff   16         '1'                       ---        ---                      
+  31       diff   11         ','                       ---        ---                      
+  32       diff   18         '3'                       ---        ---                      
+  33       diff   17         '2'                       ---        ---                      
+  34       diff   23         '8'                       ---        ---                      
+  35       diff   11         ','                       ---        ---                      
+  36       diff   15         '0'                       ---        ---                      
+  37       diff   15         '0'                       ---        ---                      
+  38       diff   15         '0'                       ---        ---                      
+  39       diff   40568      ' kilometers'             ---        ---                      
+  40       diff   701        '),'                      ---        ---                      
+  41       diff   3259       ' making'                 ---        ---                      
+  42       diff   432        ' it'                     ---        ---                      
+  43       diff   911        ' about'                  ---        ---                      
+  44       diff   220        ' '                       ---        ---                      
+  45       diff   16         '1'                       ---        ---                      
+  46       diff   16         '1'                       ---        ---                      
+  47       diff   3039       ' times'                  ---        ---                      
+  48       diff   21864      ' wider'                  ---        ---                      
+  49       diff   1091       ' than'                   ---        ---                      
+  50       diff   9237       ' Earth'                  ---        ---                      
+  51       diff   13         '.'                       ---        ---                      
+  52       diff   49689      ' Jupiter'                ---        ---                      
+  53       diff   374        ' is'                     ---        ---                      
+  54       diff   3881       ' known'                  ---        ---                      
+  55       diff   369        ' for'                    ---        ---                      
+  56       diff   1181       ' its'                    ---        ---                      
+  57       diff   8513       ' Great'                  ---        ---                      
+  58       diff   2518       ' red'                    ---        ---                      
+  59       diff   23297      ' Spot'                   ---        ---                      
+  60       diff   11         ','                       ---        ---                      
+  61       diff   264        ' a'                      ---        ---                      
+  62       diff   1293       ' long'                   ---        ---                      
+  63       diff   64165      '-lasting'                ---        ---                      
+  64       diff   13458      ' storm'                  ---        ---                      
+  65       diff   8131       ' larger'                 ---        ---                      
+  66       diff   1091       ' than'                   ---        ---                      
+  67       diff   1039       ' our'                    ---        ---                      
+  68       diff   4453       ' entire'                 ---        ---                      
+  69       diff   11580      ' planet'                 ---        ---                      
+  70       diff   11         ','                       ---        ---                      
+  71       diff   323        ' and'                    ---        ---                      
+  72       diff   1181       ' its'                    ---        ---                      
+  73       diff   3746       ' strong'                 ---        ---                      
+  74       diff   23970      ' magnetic'               ---        ---                      
+  75       diff   2070       ' field'                  ---        ---                      
+  76       diff   13         '.'                       ---        ---                      
+  77       diff   151645     '<|im_end|>'              ---        ---                      
+
+  HF  full text:
+    The largest planet in our solar system is Jupiter. It is a gas giant with a diameter of approximately 812,000 miles (1,328,000 kilometers), making it about 11 times wider than Earth. Jupiter is known for its Great red Spot, a long-lasting storm larger than our entire planet, and its strong magnetic field.<|im_end|>
+
+  SGL full text:
+    The largest planet in our solar system is Jupiter.
+
+
+====================================================================================================
+[Simple Q7 (template): If I have 10 apples and give away 3, how many do I have?]
+  HF  generated: 36 tokens
+  SGL generated: 23 tokens
+  First divergence position: 22
+  Match rate: 22/23 = 95.7%
+
+  Pos    Match    HF ID      HF Token                  SGL ID     SGL Token                
+  ------ -------- ---------- ------------------------- ---------- -------------------------
+  0        OK     2679       'If'                      2679       'If'                     
+  1        OK     498        ' you'                    498        ' you'                   
+  2        OK     15102      ' initially'              15102      ' initially'             
+  3        OK     614        ' have'                   614        ' have'                  
+  4        OK     220        ' '                       220        ' '                      
+  5        OK     16         '1'                       16         '1'                      
+  6        OK     15         '0'                       15         '0'                      
+  7        OK     40676      ' apples'                 40676      ' apples'                
+  8        OK     323        ' and'                    323        ' and'                   
+  9        OK     2968       ' give'                   2968       ' give'                  
+  10       OK     3123       ' away'                   3123       ' away'                  
+  11       OK     220        ' '                       220        ' '                      
+  12       OK     18         '3'                       18         '3'                      
+  13       OK     11         ','                       11         ','                      
+  14       OK     498        ' you'                    498        ' you'                   
+  15       OK     686        ' will'                   686        ' will'                  
+  16       OK     614        ' have'                   614        ' have'                  
+  17       OK     220        ' '                       220        ' '                      
+  18       OK     22         '7'                       22         '7'                      
+  19       OK     40676      ' apples'                 40676      ' apples'                
+  20       OK     2115       ' left'                   2115       ' left'                  
+  21       OK     13         '.'                       13         '.'                      
+  22     >>DIFF   1096       ' This'                   151645     '<|im_end|>'             
+  23       diff   374        ' is'                     ---        ---                      
+  24       diff   1576       ' because'                ---        ---                      
+  25       diff   220        ' '                       ---        ---                      
+  26       diff   16         '1'                       ---        ---                      
+  27       diff   15         '0'                       ---        ---                      
+  28       diff   481        ' -'                      ---        ---                      
+  29       diff   220        ' '                       ---        ---                      
+  30       diff   18         '3'                       ---        ---                      
+  31       diff   284        ' ='                      ---        ---                      
+  32       diff   220        ' '                       ---        ---                      
+  33       diff   22         '7'                       ---        ---                      
+  34       diff   13         '.'                       ---        ---                      
+  35       diff   151645     '<|im_end|>'              ---        ---                      
+
+  HF  full text:
+    If you initially have 10 apples and give away 3, you will have 7 apples left. This is because 10 - 3 = 7.<|im_end|>
+
+  SGL full text:
+    If you initially have 10 apples and give away 3, you will have 7 apples left.
+
+
+
+====================================================================================================
+SUMMARY
+====================================================================================================
+Label                                                HF len  SGL len   1st diff   Match%
+------------------------------------------------------------------------------------------
+GSM8K Q0 (template): Janet’s ducks lay 16 eggs per day. She eats three for breakf       60       60       SAME   100.0%
+GSM8K Q1 (template): A robe takes 2 bolts of blue fiber and half that much white        48       48       SAME   100.0%
+GSM8K Q2 (template): Josh decides to try flipping a house.  He buys a house for $      213      139         10    33.1%
+GSM8K Q3 (template): James decides to run 3 sprints 3 times a week.  He runs 60 m       48       48       SAME   100.0%
+GSM8K Q4 (template): Every day, Wendi feeds each of her chickens three cups of mi      109      109          0    99.1%
+Simple Q0 (template): What is 1+1?                       12       12       SAME   100.0%
+Simple Q1 (template): What is the capital of France?        8        6          5    83.3%
+Simple Q2 (template): What color is the sky?             91      115          8    12.1%
+Simple Q3 (template): How many days are in a week?       10        9          0     0.0%
+Simple Q4 (template): What is 2 * 3 + 4?                 48       54         17    35.4%
+Simple Q5 (template): Who wrote Romeo and Juliet?        11       11          2    90.9%
+Simple Q6 (template): What is the largest planet in our solar system?       78       11         10    90.9%
+Simple Q7 (template): If I have 10 apples and give away 3, how many do I have?       36       23         22    95.7%

@@ -1,0 +1,230 @@
+Simple Questions HF vs SGLang Comparison Report
+Model: Efficient-Large-Model/Fast_dLLM_v2_7B
+Settings: max_new_tokens=128, block_size=32, small_block_size=8, threshold=0.9, temperature=0.0
+
+================================================================================
+[Q0_no_tmpl: What is 1+1?]
+  HF  generated: 122 tokens
+  SGL generated: 128 tokens
+  First divergence: position 122
+  Match rate: 100.0%
+  HF  text:
+    1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+
+  SGL text:
+    1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+
+
+================================================================================
+[Q1_no_tmpl: What is the capital of France?]
+  HF  generated: 1 tokens
+  SGL generated: 1 tokens
+  First divergence: position SAME
+  Match rate: 100.0%
+  HF  text:
+    <|im_end|>
+  SGL text:
+    
+
+================================================================================
+[Q2_no_tmpl: What color is the sky?]
+  HF  generated: 123 tokens
+  SGL generated: 128 tokens
+  First divergence: position 0
+  Match rate: 9.8%
+  HF  text:
+     The the sky is blue.
+What color is the grass? The grass is green.
+What color is the ocean? The ocean is blue.
+What color is the sand? The sand is brown.
+What color is the apple? The apple is red.
+What color is the banana? The banana is yellow.
+What color is the cherry? The cherry is red.
+What color is the tomato? The tomato is red.
+What color is the carrot? The carrot is orange.
+What color is the onion? The onion is white.
+What color is the pepper? The pepper is green.
+What color is the mushroo
+  SGL text:
+     What the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What is the color of the sky? What
+
+================================================================================
+[Q3_no_tmpl: How many days are in a week?]
+  HF  generated: 121 tokens
+  SGL generated: 128 tokens
+  First divergence: position 0
+  Match rate: 8.3%
+  HF  text:
+    InThere are 7 days in a week.
+
+How many days are in a typical month?
+There are 30 days in a typical month.
+
+How many days are in a typical year?
+There are 365 in a typical year.
+
+How many days are in a leap year?
+There are 366 days in a leap year.
+
+How many days are in a decade?
+There are 3650 days in a decade.
+
+How many days are in a century?
+There are 36500 days in a century.
+
+How many days are in a millennium?
+There
+  SGL text:
+     ( There are 7 days in a week. )
+3. How many hours are in a day? ( There are 24 hours in a day. )
+4. How many minutes are in an hour? ( There are 60 minutes in an hour. )
+5. How many seconds are in a minute? ( There are 60 seconds in a minute. )
+
+Now, we can calculate the total number of seconds in a week by multiplying these numbers together:
+
+\[ 7 \text{ days/week} \times 24 \text{ hours/day} \times 60 \text{ minutes/hour
+
+================================================================================
+[Q4_no_tmpl: What is 2 * 3 + 4?]
+  HF  generated: 118 tokens
+  SGL generated: 36 tokens
+  First divergence: position 0
+  Match rate: 25.0%
+  HF  text:
+      answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 2 * 3 + 4?  answer is 10
+What is 
+  SGL text:
+     The answer is 2 * 3 + 4 = 6 + 4 = 10.
+
+#### 2 * 3 + 4 = 10
+
+================================================================================
+[Q5_no_tmpl: Who wrote Romeo and Juliet?]
+  HF  generated: 9 tokens
+  SGL generated: 9 tokens
+  First divergence: position 0
+  Match rate: 33.3%
+  HF  text:
+    
+
+The answer is: William Shakespeare<|im_end|>
+  SGL text:
+    1
+My answer: William Shakespeare1
+
+================================================================================
+[Q6_no_tmpl: What is the largest planet in ]
+  HF  generated: 119 tokens
+  SGL generated: 6 tokens
+  First divergence: position 0
+  Match rate: 0.0%
+  HF  text:
+     What is the smallest planet in our solar system? What is the distance between the Earth and the Sun in kilometers? What is the distance between the Earth and the Sun in miles? What is the distance between the Earth and the Sun in light? What is the distance between the Earth and the Sun in parse-years? What is the distance between the Earth and the Sun in kil-years? What is the distance between the Earth and the Sun in astronomical-years? What is the distance between the Earth and the Sun in co
+  SGL text:
+    
+
+A: Jupiter
+
+================================================================================
+[Q7_no_tmpl: If I have 10 apples and give a]
+  HF  generated: 1 tokens
+  SGL generated: 3 tokens
+  First divergence: position 0
+  Match rate: 0.0%
+  HF  text:
+    <|im_end|>
+  SGL text:
+    1?
+
+================================================================================
+[Q0_tmpl: What is 1+1?]
+  HF  generated: 12 tokens
+  SGL generated: 12 tokens
+  First divergence: position SAME
+  Match rate: 100.0%
+  HF  text:
+    The answer to 1+1 is 2.<|im_end|>
+  SGL text:
+    The answer to 1+1 is 2.
+
+================================================================================
+[Q1_tmpl: What is the capital of France?]
+  HF  generated: 8 tokens
+  SGL generated: 6 tokens
+  First divergence: position 5
+  Match rate: 83.3%
+  HF  text:
+    The capital of France is Paris.<|im_end|>
+  SGL text:
+    The capital of France is
+
+================================================================================
+[Q2_tmpl: What color is the sky?]
+  HF  generated: 91 tokens
+  SGL generated: 115 tokens
+  First divergence: position 8
+  Match rate: 12.1%
+  HF  text:
+    The sky is typically blue during the day due to the scattering of sunlight by the Earth's atmosphere. This phenomenon is known as Rayleigh scattering, where shorter wavelengths of light, like blue and, are scattered more than longer wavelengths, like red and green. However, the sky can appear different colors at sunrise and sunset, such as pink, orange, and red, due to the longer path of light through the atmosphere and the scattering of shorter wavelengths.<|im_end|>
+  SGL text:
+    The sky is typically blue during the day, especially during sunny days. This is because the Earth's atmosphere scatters sunlight in all directions, and the shorter (blue)) wavelengths of light are scattered more than the longer (red) wavelengths. This results in the sky appearing blue. However, the color of the sky can change depending on the time of day, weather conditions, and other factors. For example, the sun rises and sets, the sky can appear pink, orange, or red. Additionally, during clou
+
+================================================================================
+[Q3_tmpl: How many days are in a week?]
+  HF  generated: 10 tokens
+  SGL generated: 9 tokens
+  First divergence: position 0
+  Match rate: 0.0%
+  HF  text:
+    There are 7 days in a week.<|im_end|>
+  SGL text:
+    A week consists of 7 days.
+
+================================================================================
+[Q4_tmpl: What is 2 * 3 + 4?]
+  HF  generated: 48 tokens
+  SGL generated: 54 tokens
+  First divergence: position 17
+  Match rate: 35.4%
+  HF  text:
+    The answer is 10. According to the order of operations, you should perform multiplication before addition. So, you first multiply 2 and 3 to get 6, and then add 4 to get 10.<|im_end|>
+  SGL text:
+    The answer is 10. According to the order of operations, you should perform the multiplication before the addition. So, you would calculate 2 * 3, which equals 6, and then add 4 to that, resulting in 10.
+
+================================================================================
+[Q5_tmpl: Who wrote Romeo and Juliet?]
+  HF  generated: 11 tokens
+  SGL generated: 11 tokens
+  First divergence: position 2
+  Match rate: 90.9%
+  HF  text:
+    Romeo Juliet was written by William Shakespeare.<|im_end|>
+  SGL text:
+    Rome and Juliet was written by William Shakespeare.
+
+================================================================================
+[Q6_tmpl: What is the largest planet in ]
+  HF  generated: 78 tokens
+  SGL generated: 11 tokens
+  First divergence: position 10
+  Match rate: 90.9%
+  HF  text:
+    The largest planet in our solar system is Jupiter. It is a gas giant with a diameter of approximately 812,000 miles (1,328,000 kilometers), making it about 11 times wider than Earth. Jupiter is known for its Great red Spot, a long-lasting storm larger than our entire planet, and its strong magnetic field.<|im_end|>
+  SGL text:
+    The largest planet in our solar system is Jupiter.
+
+================================================================================
+[Q7_tmpl: If I have 10 apples and give a]
+  HF  generated: 36 tokens
+  SGL generated: 23 tokens
+  First divergence: position 22
+  Match rate: 95.7%
+  HF  text:
+    If you initially have 10 apples and give away 3, you will have 7 apples left. This is because 10 - 3 = 7.<|im_end|>
+  SGL text:
+    If you initially have 10 apples and give away 3, you will have 7 apples left.
+

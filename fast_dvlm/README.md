@@ -138,6 +138,80 @@ Inference uses the checkpoint’s own `generate` in `modeling.py` (`trust_remote
 
 To refresh VLMEvalKit, replace `third_party/VLMEvalKit` and commit.
 
+## SGLang-Accelerated Inference
+
+Fast-dVLM ships with a customized SGLang fork that implements two dLLM algorithms:
+
+- **`HierarchyBlock`** — block-diffusion parallel decoding (MDM mode)
+- **`SpeculativeBlock`** — self-speculative block decoding (≈2.6× tokens/NFE)
+
+### Install
+
+```bash
+cd fast_dvlm/sglang/python
+pip install -e .
+```
+
+The install pulls in SGLang's native dependencies (flashinfer, sgl-kernel, transformers, etc.). Use a dedicated conda env to avoid version conflicts.
+
+### Command Line Chatbot (SGLang)
+
+```bash
+# MDM (HierarchyBlock)
+python run_chatbot_sglang.py --algorithm mdm --prompt "Describe this image." --image path/to/image.jpg
+
+# Speculative block decoding
+python run_chatbot_sglang.py --algorithm spec --prompt "Describe this image." --image path/to/image.jpg
+
+# Interactive mode
+python run_chatbot_sglang.py --algorithm spec --image path/to/image.jpg
+```
+
+Key flags:
+- `--algorithm {mdm,spec}` — select MDM (HierarchyBlock) or speculative decoding (SpeculativeBlock)
+- `--model-path` — HF id or local path (default `Efficient-Large-Model/Fast_dVLM_3B`)
+- `--processor-path` — HF processor for chat template + image preprocessing (default `Qwen/Qwen2.5-VL-3B-Instruct`)
+- `--max-tokens`, `--mem-fraction-static` — generation length / GPU memory budget
+- `--quantization w8a8_fp8` — load the FP8 checkpoint (see below)
+
+If you hit a CuDNN/PyTorch 2.9 compatibility warning, set `SGLANG_DISABLE_CUDNN_CHECK=1` in the environment before launch.
+
+### FP8 Quantized Checkpoint
+
+We provide a SmoothQuant-W8A8 FP8 checkpoint for the 6.18× speedup reported above:
+
+- [`Sensen02/Fast_dVLM_3B_W8A8_FP8`](https://huggingface.co/Sensen02/Fast_dVLM_3B_W8A8_FP8) — language tower in FP8 (E4M3), visual encoder kept in BF16.
+
+Hardware requirement: **SM89+** (RTX 4090 / L40 / H100 / H200). Earlier GPUs (A100, V100) do not have FP8 tensor cores and are not supported.
+
+Launch with `--quantization`:
+
+```bash
+# FP8 inference (requires SM89+)
+python run_chatbot_sglang.py \
+    --algorithm spec \
+    --model-path Sensen02/Fast_dVLM_3B_W8A8_FP8 \
+    --quantization w8a8_fp8 \
+    --prompt "Describe this image." \
+    --image path/to/image.jpg
+```
+
+The quantized checkpoint ships with a `quantization_config` entry in `config.json`:
+
+```json
+"quantization_config": {
+    "quant_method": "w8a8_fp8",
+    "is_dynamic": false,
+    "ignore": ["re:visual.*"]
+}
+```
+
+SGLang reads this automatically:
+- Layers matching `ignore` (visual encoder) stay in BF16.
+- Remaining linear layers use per-channel static FP8 weights + per-token dynamic FP8 activations.
+
+> Running on H100 (SM90)? Diffusion decoding produces short token blocks; the CUTLASS TMA kernel requires ≥64 rows, so we fall back to the Triton FP8 GEMM for short batches automatically. No extra flags needed.
+
 ## File Structure
 
 ```
@@ -148,8 +222,10 @@ Fast-dLLM/
     ├── README.md
     ├── requirements.txt
     ├── run_chatbot.py
-    ├── vlmeval_run.py              # config + VLMEval hook (calls ckpt ``generate``)
-    └── run_eval.sh                 # VLMEval driver (default TASK=DocVQA_VAL)
+    ├── run_chatbot_sglang.py   # SGLang-backed chatbot (MDM + speculative)
+    ├── sglang/                 # Customized SGLang with Fast-dVLM model + dLLM algorithms
+    ├── vlmeval_run.py          # config + VLMEval hook (calls ckpt ``generate``)
+    └── run_eval.sh             # VLMEval driver (default TASK=DocVQA_VAL)
 ```
 
 ## Citation
