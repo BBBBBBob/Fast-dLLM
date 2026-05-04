@@ -1,3 +1,14 @@
+# Recommended install order (avoids DeepSpeed / torch / setuptools pitfalls):
+# 1) Use Python 3.10 (matches repo classifiers; avoid 3.13+).
+# 2) Install CUDA-enabled PyTorch first (CUDA major should match nvcc below, e.g. 12.4):
+#    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+# 3) If the system has no full CUDA toolkit, install nvcc via conda and set CUDA_HOME (DeepSpeed checks this on import):
+#    conda install -y cuda-nvcc=12.4 -c nvidia
+#    export CUDA_HOME="${CUDA_HOME:-$CONDA_PREFIX}"
+# 4) Then: pip install -r requirements.txt && pip install -e .
+
+# Newer setuptools drops pkg_resources; this repo still imports it (see lmflow.utils.versioning).
+setuptools>=64,<81
 
 packaging
 numpy

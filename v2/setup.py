@@ -3,7 +3,8 @@ from setuptools import find_packages
 from setuptools import setup
 
 folder = os.path.dirname(__file__)
-version_path = os.path.join(folder, "src", "lmflow", "version.py")
+_third_party = os.path.normpath(os.path.join(folder, "..", "third_party"))
+version_path = os.path.join(_third_party, "lmflow", "version.py")
 
 __version__ = None
 with open(version_path) as f:
@@ -38,8 +39,8 @@ setup(
     author="The LMFlow Team",
     long_description=readme_contents,
     long_description_content_type="text/markdown",
-    package_dir={"": "src"},
-    packages=find_packages("src"),
+    package_dir={"": _third_party},
+    packages=find_packages(where=_third_party),
     package_data={},
     install_requires=install_requires,
     extras_require=extra_require,
