@@ -1119,7 +1119,7 @@ class AutoencoderKLStepvideo(nn.Module, ParallelTiledVAE):
         # b, len, c, h, w = x.size()
         b, c, len, h, w = x.size()
         # x = rearrange(x, 'b l c h w -> b c l h w').contiguous()
-        z = self.encoder(x, len, True)  # 下采样[1, 4, 8, 16, 16]
+        z = self.encoder(x, len, True)  # Downsamples with factors [1, 4, 8, 16, 16]
         return z
 
     @torch.inference_mode()

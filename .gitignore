@@ -8,3 +8,20 @@ v1/dream/evals_results/
 .DS_Store
 **/.DS_Store
 eval_outputs/
+
+# Local Python / tooling (keep repo clones small)
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+wandb/
+
+# Typical finetune output root (finetune_multimodal_example.sh default lives under output_models/)
+output_models/
+
+# Downloaded ALLaVA-4V (HF) + full-download logs (see fast_dvlm/data/download_example_dataset.sh)
+fast_dvlm/data/ALLaVA-4V/

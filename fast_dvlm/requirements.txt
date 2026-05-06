@@ -2,11 +2,29 @@
 # wheels that require a newer NVIDIA user-space driver than typical 12.2 installs.
 --extra-index-url https://download.pytorch.org/whl/cu124
 
-transformers>=4.57.1,<5.0
+# Inference / chatbot side.
 torch==2.6.0
 torchvision==0.21.0
-accelerate>=1.12.0,<2.0
 qwen-vl-utils==0.0.14
 gradio>=3.35.2,<4.0
 Pillow>=10.0.0
 openai>=1.0.0
+
+# Training (Fast-dVLM finetuning via vendored lmflow under ``third_party/lmflow``).
+# Mirrors v2/requirements.txt — the lmflow code paths still rely on
+# ``transformers.utils.send_example_telemetry`` etc. that newer transformers removed.
+# See fast_dvlm/train_scripts/finetune_multimodal_example.sh.
+transformers==4.53.1
+tokenizers>=0.13.3
+datasets==2.14.6
+pyarrow==18.0.0
+accelerate>=0.27.2
+peft>=0.10.0
+deepspeed>=0.14.4
+evaluate==0.4.0
+sentencepiece
+einops>=0.6.1
+cpm_kernels==1.0.11
+wandb
+# lmflow.utils.versioning still imports pkg_resources; pin setuptools accordingly.
+setuptools>=64,<81

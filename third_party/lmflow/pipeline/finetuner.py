@@ -467,7 +467,9 @@ class Finetuner(BaseTuner):
         # Tokenization and text grouping must be done in the main process
         if dataset.backend == "custom_multi_modal":
             dataset.backend_dataset.register_tokenizer(
-                model.tokenizer, model.image_processor)
+                model.tokenizer,
+                getattr(model, "image_processor", None),
+            )
             lm_dataset = dataset
         else:
             with finetuner_args.main_process_first(desc="dataset map tokenization"):

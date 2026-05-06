@@ -1002,9 +1002,9 @@ class DotDict(dict):
         super().__init__()
         for key, value in mapping.items():
             if isinstance(value, dict):
-                value = DotDict(value)  # 递归转换
+                value = DotDict(value)  # Recursively wrap nested dicts
             elif isinstance(value, list):
-                # 如果是 list，且元素是 dict 也递归转换
+                # If elements are dicts, wrap those recursively too
                 value = [
                     DotDict(item) if isinstance(item, dict) else item for item in value
                 ]

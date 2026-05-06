@@ -114,6 +114,59 @@ Commands in interactive mode:
 - `clear` - Clear conversation history
 - `exit` - Quit the chatbot
 
+## Fine-tuning (example launcher)
+
+This repo ships a **minimal multimodal MDM fine-tuning sample** wired to LMFlow’s `custom_multi_modal` backend (LLaVA-style JSON: `image` + `conversations`). The Python entry parses `ModelArguments`, `MultiModalDatasetArguments`, and the LMFlow `FinetunerArguments`/`TrainingArguments` fields; it fixes `return_as_qwen_messages=True`, builds **`DataCollatorForQwenVL`**, and enables Qwen2.5-VL style `pixel_values` / `image_grid_thw`.
+
+| Path | Role |
+|------|------|
+| [`train_scripts/finetune_dvlm.py`](train_scripts/finetune_dvlm.py) | Invokes LMFlow `finetuner` + `Dataset(..., backend="custom_multi_modal")` + `AutoModel.get_model(...)`. Supports CLI args or a single `.json` config file (`python finetune_dvlm.py /path/to/args.json`). |
+| [`train_scripts/finetune_multimodal_example.sh`](train_scripts/finetune_multimodal_example.sh) | DeepSpeed launcher: exports `PYTHONPATH=<repo>/third_party`, optional resume from latest `checkpoint-*` under `--output_dir`, default ZeRO JSON `v2/configs/ds_config_zero2_no_offload.json`. |
+| [`data/download_example_dataset.sh`](data/download_example_dataset.sh) | Fetches ALLaVA-4V LAION split (JSON + optional `images_*.zip` chunks) into `fast_dvlm/data/ALLaVA-4V/` and writes `source_training_env.sh`. |
+
+### Prerequisites
+
+- **Deps:** From repo root: `pip install -r fast_dvlm/requirements.txt` and `pip install -e ./v2/` for the LMFlow CLI package—or rely only on **`PYTHONPATH=<repo>/third_party`** (`finetune_multimodal_example.sh` exports this for you).
+- **Runtime:** GPU nodes with **torch**, **DeepSpeed**, **transformers**, **Pillow**, **datasets** (`huggingface_hub` for the downloader).
+- **Checkpoint:** override the launcher default with a public or local checkpoint, e.g. `MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B`.
+
+### Dataset (ALLaVA-4V)
+
+From **Fast-dLLM repo root**:
+
+```bash
+pip install -U huggingface_hub  # provides `hf` CLI for downloader
+bash fast_dvlm/data/download_example_dataset.sh allava
+# Smoke test (~one 9 GB chunk): IMAGE_CHUNKS=0 bash fast_dvlm/data/download_example_dataset.sh allava
+# JSON manifest only: JSON_ONLY=1 bash fast_dvlm/data/download_example_dataset.sh allava
+```
+
+Then:
+
+```bash
+source fast_dvlm/data/ALLaVA-4V/source_training_env.sh   # exports DATASET_PATH / IMAGE_FOLDER
+```
+
+Alternatively set `DATASET_PATH` (single JSON list of samples) and `IMAGE_FOLDER` (root containing paths like `allava_laion/images/...`) yourself for any LMFlow-compatible multimodal JSON.
+
+### Run training
+
+```bash
+# From Fast-dLLM repository root (recommended)
+MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B \
+TOKENIZER_NAME=Qwen/Qwen2.5-VL-3B-Instruct \
+bash fast_dvlm/train_scripts/finetune_multimodal_example.sh
+```
+
+Writes to `OUTPUT_DIR` (default: `Fast-dLLM/output_models/finetune_fast_dVLM_3B_example`). Common overrides via environment variables:
+
+- **`MODEL_PATH`**, **`TOKENIZER_NAME`**, **`OUTPUT_DIR`**, **`DATASET_PATH`**, **`IMAGE_FOLDER`**
+- **`DEEPSPEED_CONFIG`** (default points at `v2/configs/ds_config_zero2_no_offload.json`)
+- **`MASTER_PORT`** or full **`DEEPSPEED_ARGS`**
+- **Hyperparameters:** `NUM_TRAIN_EPOCHS`, `LEARNING_RATE`, `PER_DEVICE_TRAIN_BATCH_SIZE`, `GRADIENT_ACCUMULATION_STEPS`, `SAVE_STEPS`, `MAX_STEPS`, `WARMUP_RATIO`, … (passed through to HF `TrainingArguments` / LMFlow)
+
+MDM knobs such as **`--mdm`**, **`--bd_size`**, and **`--block_size`** are available from LMFlow **`ModelArguments` / dataset args**; add them by editing the launcher or invoking `python fast_dvlm/train_scripts/finetune_dvlm.py --help`.
+
 ## Evaluation (VLMEvalKit)
 
 [VLMEvalKit](https://github.com/open-compass/VLMEvalKit) is **vendored** at `../third_party/VLMEvalKit` (i.e. `Fast-dLLM/third_party/VLMEvalKit`). `run_eval.sh` runs one dataset per invocation; **default `TASK` is `DocVQA_VAL`** as a concrete example—override with `TASK=…` for any other VLMEval split.
@@ -217,10 +270,18 @@ SGLang reads this automatically:
 ```
 Fast-dLLM/
 ├── third_party/
-│   └── VLMEvalKit/
+│   ├── VLMEvalKit/
+│   └── lmflow/                 # LMFlow fork (multimodal finetuner; PYTHONPATH via train script)
+├── v2/
+│   └── configs/                # e.g. ds_config_zero2_no_offload.json (DeepSpeed ZeRO used by train sample)
 └── fast_dvlm/
     ├── README.md
     ├── requirements.txt
+    ├── train_scripts/
+    │   ├── finetune_multimodal_example.sh  # DeepSpeed + env-driven hyperparameters
+    │   └── finetune_dvlm.py                # LMFlow finetuner entry (custom_multi_modal)
+    ├── data/
+    │   └── download_example_dataset.sh     # ALLaVA-4V helper (+ source_training_env.sh)
     ├── run_chatbot.py
     ├── run_chatbot_sglang.py   # SGLang-backed chatbot (MDM + speculative)
     ├── sglang/                 # Customized SGLang with Fast-dVLM model + dLLM algorithms

@@ -669,6 +669,18 @@ class MultiModalDatasetArguments(DatasetArguments):
     sep_style: Optional[str] = field(
         default="plain", metadata={"help": "Sep style in multi_modality dataset."}
     )
+    return_as_qwen_messages: bool = field(
+        default=False,
+        metadata={
+            "help": (
+                "If True, ``CustomMultiModalDataset.__getitem__`` returns only "
+                "``{\"messages\": [...]}`` (Qwen/OpenAI chat format with PIL ``image`` "
+                "in content) so a Qwen ``processor`` + :class:`~lmflow.datasets.multi_modal_dataset.DataCollatorForQwenVL` "
+                "can apply_chat_template and tokenize. Default False keeps LLaVA-style "
+                "``input_ids`` / ``labels`` / ``image`` tensors."
+            )
+        },
+    )
 
 
 @dataclass

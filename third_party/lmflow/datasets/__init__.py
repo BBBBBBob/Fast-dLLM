@@ -9,4 +9,7 @@ from lmflow.utils.versioning import is_multimodal_available
 
 from lmflow.datasets.dataset import Dataset
 if is_multimodal_available():
-    from lmflow.datasets.multi_modal_dataset import CustomMultiModalDataset
+    from lmflow.datasets.multi_modal_dataset import (
+        CustomMultiModalDataset,
+        DataCollatorForQwenVL,
+    )

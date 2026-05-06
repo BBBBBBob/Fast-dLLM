@@ -822,7 +822,7 @@ class BailingMoEForCausalLM(nn.Module):
             prefix=add_prefix("model", ""),
         )
 
-        # tie_word_embeddings为true，复用tie_word_embeddings，反之是独立的
+        # If tie_word_embeddings is True, reuse tie weights; otherwise use a dedicated lm head.
         if config.tie_word_embeddings:
             self.lm_head = self.model.word_embeddings
         else:

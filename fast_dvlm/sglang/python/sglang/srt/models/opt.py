@@ -317,7 +317,7 @@ class OPTDecoder(nn.Module):
             return PPProxyTensors({"hidden_states": hidden_states})
         if self.final_layer_norm is not None:
             hidden_states = self.final_layer_norm(hidden_states)
-            # 没有经过这里
+            # Upstream note: this normalization block is inactive for typical served OPT setups.
         if self.project_out is not None:
             hidden_states, _ = self.project_out(hidden_states)
         return hidden_states

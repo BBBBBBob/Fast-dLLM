@@ -52,7 +52,7 @@ Fast-dLLM/
 │   ├── app.py / run_chatbot.py
 │   ├── requirements.txt
 │   └── README.md
-├── fast_dvlm/              # Fast-dVLM: Block-diffusion VLM (chatbot + VLMEval; see fast_dvlm/README.md)
+├── fast_dvlm/              # Fast-dVLM: Block-diffusion VLM (chatbot, optional finetune sample, VLMEval; see fast_dvlm/README.md)
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md               # This file
@@ -107,6 +107,8 @@ python run_chatbot.py \
 # Interactive mode
 python run_chatbot.py
 ```
+
+**Fine-tuning (optional example):** multimodal MDM training uses DeepSpeed + the LMFlow fork under [`third_party/`](third_party/) (the launcher sets `PYTHONPATH` for you). Download [ALLaVA-4V](https://huggingface.co/datasets/FreedomIntelligence/ALLaVA-4V) with `fast_dvlm/data/download_example_dataset.sh`, then run `bash fast_dvlm/train_scripts/finetune_multimodal_example.sh` from the repo root—see [Fine-tuning (example launcher)](fast_dvlm/README.md#fine-tuning-example-launcher) in [fast_dvlm/README.md](fast_dvlm/README.md).
 
 For full details, see [fast_dvlm/README.md](fast_dvlm/README.md).
 

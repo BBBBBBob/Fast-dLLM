@@ -63,7 +63,7 @@ class AttentionType:
     ENCODER_DECODER = "encoder_decoder"
 
 
-_seen_keys = set()  # 用集合记录已经出现过的 key
+_seen_keys = set()  # Keys already emitted (avoid duplicates).
 
 
 @dataclass

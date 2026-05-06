@@ -6,19 +6,77 @@
 import copy
 from dataclasses import dataclass, field
 import json
+from typing import Any, Dict, List, Optional, Tuple
 from PIL import Image
 import os.path as osp
 import transformers
 import torch
 from torch.utils.data import Dataset
 
+try:
+    from qwen_vl_utils import process_vision_info
+except ImportError:  # optional until Qwen VL training stack is used
+    process_vision_info = None  # type: ignore[misc, assignment]
+
 from lmflow.args import DatasetArguments
 from lmflow.utils import llava_conversation_lib as conversation_lib
 
 from lmflow.utils.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 
+
+def _llava_conversations_to_qwen_messages(
+    conversations: List[Dict[str, Any]],
+    pil_image: Optional[Image.Image],
+) -> List[Dict[str, Any]]:
+    """Map LLaVA ``human`` / ``gpt`` turns to Qwen ``messages`` (first user turn may include a PIL image)."""
+    role_from = {"human": "user", "gpt": "assistant"}
+    messages: List[Dict[str, Any]] = []
+    pending_image = pil_image is not None
+    for turn in conversations:
+        role = role_from.get(turn.get("from"), "user")
+        val = turn.get("value", "")
+        if role == "user" and pending_image:
+            text = (
+                val.replace(DEFAULT_IMAGE_TOKEN, "")
+                .replace("<image>", "")
+                .strip()
+            )
+            messages.append(
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "image", "image": pil_image},
+                        {"type": "text", "text": text},
+                    ],
+                }
+            )
+            pending_image = False
+        else:
+            messages.append({"role": role, "content": [{"type": "text", "text": val}]})
+    return messages
+
+
 class CustomMultiModalDataset(Dataset):
-    """Dataset for Multi Modal data"""
+    """LMFlow ``custom_multi_modal`` dataset (JSON list).
+
+    ``dataset_path`` must be a single JSON file whose root is a **list** of samples.
+    Each sample uses ``image`` (filename under ``image_folder``) and ``conversations``
+    (``human`` / ``gpt`` turns), e.g.::
+
+        {
+            "image": "example.jpg",
+            "conversations": [
+                {"from": "human", "value": "<image>\\nWhat is in the picture?"},
+                {"from": "gpt", "value": "A cat."}
+            ]
+        }
+
+    See LMFlow documentation for multimodal / image-text dataset formats.
+
+    Set ``data_args.return_as_qwen_messages=True`` (see :class:`lmflow.args.MultiModalDatasetArguments`)
+    to return ``{"messages": [...]}`` only, for Qwen ``processor`` + :class:`DataCollatorForQwenVL`.
+    In that mode images are raw RGB PIL; resizing / padding is done in the collator via ``processor``.
+    """
 
     def __init__(self, dataset_path: str,
                  data_args: DatasetArguments):
@@ -42,6 +100,21 @@ class CustomMultiModalDataset(Dataset):
         if isinstance(i, int):
             data = [data]
         assert len(data) == 1
+        sample0 = data[0]
+
+        if getattr(self.data_args, "return_as_qwen_messages", False):
+            pil_image: Optional[Image.Image] = None
+            if "image" in sample0:
+                image_file = sample0["image"]
+                pil_image = Image.open(
+                    osp.join(self.image_folder, image_file),
+                ).convert("RGB")
+            messages = _llava_conversations_to_qwen_messages(
+                sample0["conversations"],
+                pil_image,
+            )
+            return {"messages": messages}
+
         processor = self.image_processor
         if 'image' in data[0]:
             image_file = data[0]['image']
@@ -265,6 +338,171 @@ def preprocess_llama_from_llava_v1(
         input_ids=input_ids,
         labels=targets,
     )
+
+
+def _vision_info_for_messages(messages: List[Dict[str, Any]]) -> Tuple[Any, Any, Optional[Dict[str, Any]], Optional[List[Any]]]:
+    """Call ``process_vision_info``; support 2- or 3-tuple returns and optional (video, meta) pairs."""
+    if process_vision_info is None:
+        raise ImportError("Install qwen-vl-utils for DataCollatorForQwenVL (pip install qwen-vl-utils).")
+    try:
+        out = process_vision_info(
+            messages,
+            image_patch_size=16,
+            return_video_kwargs=True,
+            return_video_metadata=True,
+        )
+    except TypeError:
+        out = process_vision_info(messages)
+    video_kwargs: Optional[Dict[str, Any]] = None
+    video_metadatas: Optional[List[Any]] = None
+    if len(out) == 2:
+        image_inputs, video_inputs = out[0], out[1]
+    elif len(out) == 3:
+        image_inputs, video_inputs, video_kwargs = out[0], out[1], out[2]
+        if video_inputs is not None and len(video_inputs) > 0:
+            first = video_inputs[0]
+            if isinstance(first, (tuple, list)) and len(first) == 2:
+                vids, metas = zip(*video_inputs)
+                video_inputs, video_metadatas = list(vids), list(metas)
+    else:
+        raise ValueError(f"process_vision_info returned length {len(out)}, expected 2 or 3")
+    return image_inputs, video_inputs, video_kwargs, video_metadatas
+
+
+@dataclass
+class DataCollatorForQwenVL(object):
+    """Qwen-VL batching for ``{"messages": ...}`` rows from :class:`CustomMultiModalDataset`.
+
+    Per sample: ``processor.apply_chat_template`` → ``process_vision_info`` →
+    ``processor(text=[...], images=..., videos=..., ...)`` (same as ``fast_dvlm/run_chatbot.py``),
+    then pads ``input_ids`` / ``labels`` and masks non-assistant tokens in ``labels``.
+    """
+
+    processor: Any
+    tokenizer: transformers.PreTrainedTokenizer
+    ignore_index: int = IGNORE_INDEX
+    target_sequence: torch.Tensor = field(
+        default_factory=lambda: torch.tensor([151644, 77091, 198], dtype=torch.long),
+    )
+
+    def __call__(self, instances: List[Dict[str, Any]]) -> Dict[str, Any]:
+        all_input_ids: List[torch.Tensor] = []
+        all_pixel_values: List[Optional[torch.Tensor]] = []
+        all_image_grid_thw: List[torch.Tensor] = []
+        all_pixel_values_videos: List[Optional[torch.Tensor]] = []
+        all_video_grid_thw: List[Optional[torch.Tensor]] = []
+        all_second_per_grid_ts: List[Optional[torch.Tensor]] = []
+
+        for ins in instances:
+            messages = ins["messages"]
+            text = self.processor.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=False,
+            )
+            image_inputs, video_inputs, video_kwargs, video_metadatas = _vision_info_for_messages(
+                messages,
+            )
+
+            proc_kwargs: Dict[str, Any] = {
+                "text": [text],
+                "padding": False,
+                "return_tensors": "pt",
+            }
+            if image_inputs is not None and len(image_inputs) > 0:
+                proc_kwargs["images"] = image_inputs
+            if video_inputs is not None and len(video_inputs) > 0:
+                proc_kwargs["videos"] = video_inputs
+            if video_kwargs:
+                proc_kwargs.update(video_kwargs)
+            if video_metadatas is not None and len(video_metadatas) > 0:
+                proc_kwargs["video_metadata"] = video_metadatas
+                proc_kwargs.setdefault("do_resize", False)
+
+            inputs = self.processor(**proc_kwargs)
+            input_ids_single = inputs["input_ids"].squeeze(0)
+
+            if "pixel_values" in inputs:
+                all_pixel_values.append(inputs["pixel_values"])
+            else:
+                all_pixel_values.append(None)
+            if "image_grid_thw" in inputs:
+                all_image_grid_thw.append(inputs["image_grid_thw"])
+            else:
+                all_image_grid_thw.append(torch.tensor([[0, 0, 0]], dtype=torch.long))
+            all_pixel_values_videos.append(
+                inputs["pixel_values_videos"] if "pixel_values_videos" in inputs else None,
+            )
+            all_video_grid_thw.append(
+                inputs["video_grid_thw"] if "video_grid_thw" in inputs else None,
+            )
+            all_second_per_grid_ts.append(
+                inputs["second_per_grid_ts"] if "second_per_grid_ts" in inputs else None,
+            )
+
+            all_input_ids.append(input_ids_single)
+
+        input_ids = torch.nn.utils.rnn.pad_sequence(
+            all_input_ids,
+            batch_first=True,
+            padding_value=self.tokenizer.pad_token_id,
+        )
+        attention_masks = input_ids.ne(self.tokenizer.pad_token_id)
+        labels = input_ids.clone()
+
+        im_end_token = self.tokenizer.encode("<|im_end|>", add_special_tokens=False)
+        im_end_id = im_end_token[0] if len(im_end_token) == 1 else 151645
+
+        seq_pat = self.target_sequence
+        T = int(seq_pat.numel())
+        for b in range(input_ids.size(0)):
+            seq = input_ids[b]
+            labels[b, :] = self.ignore_index
+            idx = 0
+            while idx <= seq.numel() - T:
+                if torch.equal(seq[idx : idx + T], seq_pat.to(seq.device)):
+                    response_start = idx + T
+                    response_end = response_start
+                    while response_end < seq.numel():
+                        if seq[response_end].item() == im_end_id:
+                            response_end += 2
+                            break
+                        if (
+                            response_end + T <= seq.numel()
+                            and torch.equal(
+                                seq[response_end : response_end + T],
+                                seq_pat.to(seq.device),
+                            )
+                        ):
+                            break
+                        response_end += 1
+                    if response_start < response_end:
+                        labels[b, response_start:response_end] = seq[response_start:response_end]
+                    idx = response_end + 1
+                else:
+                    idx += 1
+
+        labels = labels.masked_fill(input_ids == self.tokenizer.pad_token_id, self.ignore_index)
+
+        batch: Dict[str, Any] = {
+            "input_ids": input_ids,
+            "labels": labels,
+            "attention_mask": attention_masks,
+        }
+        valid_pv = [pv for pv in all_pixel_values if pv is not None]
+        if len(valid_pv) > 0:
+            batch["pixel_values"] = torch.cat(valid_pv, dim=0)
+        batch["image_grid_thw"] = torch.cat(all_image_grid_thw, dim=0)
+        valid_pvv = [x for x in all_pixel_values_videos if x is not None]
+        if len(valid_pvv) > 0:
+            batch["pixel_values_videos"] = torch.cat(valid_pvv, dim=0)
+        valid_vg = [x for x in all_video_grid_thw if x is not None]
+        if len(valid_vg) > 0:
+            batch["video_grid_thw"] = torch.cat(valid_vg, dim=0)
+        valid_spg = [x for x in all_second_per_grid_ts if x is not None]
+        if len(valid_spg) > 0:
+            batch["second_per_grid_ts"] = torch.cat(valid_spg, dim=0)
+        return batch
 
 
 @dataclass

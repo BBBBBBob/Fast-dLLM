@@ -54,7 +54,7 @@ def run_inference(model, processor, image, prompt, args):
 def main():
     parser = argparse.ArgumentParser(description="Fast-dVLM chatbot")
     parser.add_argument(
-        "--model-name", default="Efficient-Large-Model/Fast_dVLM_3B",
+        "--model-name", default="output_models/Fast_dVLM_3B",
         help="HuggingFace model id or local path.",
     )
     parser.add_argument(
@@ -73,7 +73,9 @@ def main():
 
     print("Loading model...")
     model = AutoModelForCausalLM.from_pretrained(
-        args.model_name, torch_dtype="auto", device_map="auto",
+        args.model_name,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
         trust_remote_code=True,
     )
     tokenizer = AutoTokenizer.from_pretrained(args.model_name)
