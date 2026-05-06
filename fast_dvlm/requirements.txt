@@ -14,7 +14,7 @@ openai>=1.0.0
 # Mirrors v2/requirements.txt — the lmflow code paths still rely on
 # ``transformers.utils.send_example_telemetry`` etc. that newer transformers removed.
 # See fast_dvlm/train_scripts/finetune_multimodal_example.sh.
-transformers==4.53.1
+transformers==4.57.1
 tokenizers>=0.13.3
 datasets==2.14.6
 pyarrow==18.0.0

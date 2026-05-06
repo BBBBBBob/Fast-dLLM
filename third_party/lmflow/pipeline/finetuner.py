@@ -28,7 +28,6 @@ from transformers.trainer_callback import (
 )
 from transformers.utils import (
     is_sagemaker_mp_enabled,
-    send_example_telemetry,
 )
 import numpy as np
 
@@ -79,11 +78,6 @@ class Finetuner(BaseTuner):
         self.model_args = model_args
         self.data_args = data_args
         self.finetuner_args = finetuner_args
-
-        # Sending telemetry. Tracking the example usage helps us better
-        # allocate resources to maintain them. The information sent is the one
-        # passed as arguments along with your Python/PyTorch versions.
-        send_example_telemetry("run_clm", model_args, data_args)
 
         # Setup logging
         logging.basicConfig(
