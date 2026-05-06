@@ -73,7 +73,7 @@ cd "${_repo_root}"
 
 cmd="deepspeed ${deepspeed_args} \
   fast_dvlm/train_scripts/finetune_dvlm.py \
-    --model_name_or_path $(printf '%q' "${MODEL_PATH:-/home/chengyuew/chengyuew/workspace/LMFlow/output_models/Fast_dVLM_3B}") \
+    --model_name_or_path $(printf '%q' "${MODEL_PATH:-Efficient-Large-Model/Fast_dVLM_3B}") \
     --tokenizer_name $(printf '%q' "${TOKENIZER_NAME:-Qwen/Qwen2.5-VL-3B-Instruct}") \
     --trust_remote_code ${TRUST_REMOTE_CODE:-1} \
     --dataset_path $(printf '%q' "${DATASET_PATH}") \

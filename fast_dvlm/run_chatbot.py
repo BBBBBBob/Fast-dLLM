@@ -54,7 +54,7 @@ def run_inference(model, processor, image, prompt, args):
 def main():
     parser = argparse.ArgumentParser(description="Fast-dVLM chatbot")
     parser.add_argument(
-        "--model-name", default="output_models/Fast_dVLM_3B",
+        "--model-name", default="Efficient-Large-Model/Fast_dVLM_3B",
         help="HuggingFace model id or local path.",
     )
     parser.add_argument(
