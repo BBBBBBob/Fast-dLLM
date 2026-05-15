@@ -4,8 +4,9 @@ import argparse
 import os
 import sys
 
-# Drop this script's dir from sys.path so `import sglang` resolves to the
-# installed package, not the local ./sglang source tree (a namespace pkg).
+# `import sglang` must resolve to the pip-installed fork (third_party/sglang),
+# so drop this script's dir from sys.path to avoid shadowing by a stray
+# local `sglang/` next to this file.
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path = [p for p in sys.path if os.path.abspath(p) != _HERE]
 

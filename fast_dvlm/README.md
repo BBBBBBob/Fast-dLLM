@@ -200,9 +200,10 @@ Fast-dVLM ships with a customized SGLang fork that implements two dLLM algorithm
 
 ### Install
 
+The customized SGLang fork is **vendored** at `../third_party/sglang` (i.e. `Fast-dLLM/third_party/sglang`), alongside `third_party/VLMEvalKit`. From the repo root:
+
 ```bash
-cd fast_dvlm/sglang/python
-pip install -e .
+pip install -e third_party/sglang/python
 ```
 
 The install pulls in SGLang's native dependencies (flashinfer, sgl-kernel, transformers, etc.). Use a dedicated conda env to avoid version conflicts.
@@ -271,6 +272,7 @@ SGLang reads this automatically:
 Fast-dLLM/
 ├── third_party/
 │   ├── VLMEvalKit/
+│   ├── sglang/                 # Customized SGLang with Fast-dVLM model + dLLM algorithms
 │   └── lmflow/                 # LMFlow fork (multimodal finetuner; PYTHONPATH via train script)
 ├── v2/
 │   └── configs/                # e.g. ds_config_zero2_no_offload.json (DeepSpeed ZeRO used by train sample)
@@ -284,8 +286,7 @@ Fast-dLLM/
     │   └── download_example_dataset.sh     # ALLaVA-4V helper (+ source_training_env.sh)
     ├── run_chatbot.py
     ├── run_chatbot_sglang.py   # SGLang-backed chatbot (MDM + speculative)
-    ├── sglang/                 # Customized SGLang with Fast-dVLM model + dLLM algorithms
-    ├── vlmeval_run.py          # config + VLMEval hook (calls ckpt ``generate``)
+    ├── vlmeval_run.py          # config + VLMEval hook (HF ckpt ``generate`` or SGLang backend)
     └── run_eval.sh             # VLMEval driver (default TASK=DocVQA_VAL)
 ```
 
