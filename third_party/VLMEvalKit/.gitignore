@@ -220,3 +220,6 @@ result*
 debug
 outputs
 scripts/data
+
+# Fast-dLLM: keep vendored source module (the broad `result*` rule above wrongly ignores it)
+!vlmeval/utils/result_transfer.py
