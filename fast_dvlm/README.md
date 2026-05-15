@@ -187,7 +187,23 @@ MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B bash fast_dvlm/run_eval.sh
 # Other split: TASK=MMBench_DEV_EN_V11 DATASET_CLASS=ImageMCQDataset MODEL_PATH=… bash fast_dvlm/run_eval.sh
 ```
 
-Inference uses the checkpoint’s own `generate` in `modeling.py` (`trust_remote_code` + `AutoModelForCausalLM`), same stack as `run_chatbot.py`. This folder only adds `vlmeval_run.py` (VLMEval config + thin wrapper) and `run_eval.sh`. If weights live in a folder without a processor, set `PROCESSOR_PATH` (e.g. `Qwen/Qwen2.5-VL-3B-Instruct`); otherwise the processor is loaded from `MODEL_PATH` like the chatbot.
+By default inference uses the checkpoint’s own `generate` in `modeling.py` (`trust_remote_code` + `AutoModelForCausalLM`), same stack as `run_chatbot.py`. This folder only adds `vlmeval_run.py` (VLMEval config + thin wrapper) and `run_eval.sh`. If weights live in a folder without a processor, set `PROCESSOR_PATH` (e.g. `Qwen/Qwen2.5-VL-3B-Instruct`); otherwise the processor is loaded from `MODEL_PATH` like the chatbot.
+
+**SGLang backend.** Set `BACKEND=sglang` to run the same eval through the vendored SGLang fork (`sgl.Engine`, same stack as `run_chatbot_sglang.py`) instead of HF. Requires `pip install -e third_party/sglang/python`.
+
+```bash
+# MDM (HierarchyBlock) via SGLang
+BACKEND=sglang ALGORITHM=mdm MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B bash fast_dvlm/run_eval.sh
+
+# Speculative block decoding
+BACKEND=sglang ALGORITHM=spec MODEL_PATH=Efficient-Large-Model/Fast_dVLM_3B bash fast_dvlm/run_eval.sh
+
+# FP8 W8A8 quantized checkpoint (requires SM89+: 4090 / L40 / H100 / H200)
+BACKEND=sglang ALGORITHM=spec QUANTIZATION=w8a8_fp8 \
+  MODEL_PATH=Sensen02/Fast_dVLM_3B_W8A8_FP8 bash fast_dvlm/run_eval.sh
+```
+
+`BACKEND=sglang` adds `ALGORITHM` (`mdm`|`spec`, default `mdm`), `QUANTIZATION` (e.g. `w8a8_fp8`), and `MEM_FRACTION_STATIC` (default `0.75`); other knobs (`TASK`, `MAX_TOKENS`, `PROCESSOR_PATH`, …) behave the same. See the [FP8 Quantized Checkpoint](#fp8-quantized-checkpoint) section for hardware requirements.
 
 To refresh VLMEvalKit, replace `third_party/VLMEvalKit` and commit.
 
