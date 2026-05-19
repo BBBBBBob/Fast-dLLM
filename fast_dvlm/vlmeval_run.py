@@ -3,17 +3,36 @@
 
   python vlmeval_run.py write-config   # env: CFG_PATH, MODEL_PATH_ABS, DATASETS, …
   torchrun … vlmeval_run.py --config … --work-dir …
+
+Two inference backends, selected by ``BACKEND`` (config key ``backend``):
+
+* ``hf``     — checkpoint ``modeling.py`` ``generate`` via ``AutoModelForCausalLM``
+               (trust_remote_code). Same stack as ``run_chatbot.py``. Default.
+* ``sglang`` — the vendored SGLang fork (``third_party/sglang``) ``sgl.Engine``,
+               same stack as ``run_chatbot_sglang.py``. Honors ``ALGORITHM``
+               (mdm = HierarchyBlock, spec = SpeculativeBlock) and
+               ``QUANTIZATION`` (e.g. ``w8a8_fp8``; requires SM89+).
 """
 from __future__ import annotations
 
+import atexit
 import json
 import os
 import sys
 from typing import Any, Dict, List, Optional, Union
 
+# sglang algorithm -> dLLM decoding class (mirrors run_chatbot_sglang.py).
+ALGO_MAP = {
+    "mdm": "HierarchyBlock",
+    "spec": "SpeculativeBlock",
+}
+
 
 def write_vlmeval_config() -> None:
-    """Env: CFG_PATH, MODEL_PATH_ABS; optional DATASETS, DATASET_CLASS, PROCESSOR_PATH (defaults to MODEL_PATH_ABS), MAX_TOKENS, BLOCK_SIZE, MASK_TOKEN, TORCH_DTYPE."""
+    """Env: CFG_PATH, MODEL_PATH_ABS; optional DATASETS, DATASET_CLASS,
+    PROCESSOR_PATH (defaults to MODEL_PATH_ABS), MAX_TOKENS, BLOCK_SIZE,
+    MASK_TOKEN, TORCH_DTYPE, BACKEND (hf|sglang), ALGORITHM (mdm|spec),
+    QUANTIZATION (e.g. w8a8_fp8), MEM_FRACTION_STATIC."""
     datasets = os.environ.get("DATASETS", "DocVQA_VAL").split()
     dataset_class = os.environ.get("DATASET_CLASS", "ImageVQADataset")
 
@@ -30,6 +49,15 @@ def write_vlmeval_config() -> None:
     if bs:
         model_cfg["block_size"] = int(bs)
 
+    backend = os.environ.get("BACKEND", "hf").strip().lower() or "hf"
+    model_cfg["backend"] = backend
+    if backend == "sglang":
+        model_cfg["algorithm"] = os.environ.get("ALGORITHM", "mdm").strip().lower() or "mdm"
+        model_cfg["mem_fraction_static"] = float(os.environ.get("MEM_FRACTION_STATIC", "0.75"))
+        quant = os.environ.get("QUANTIZATION", "").strip()
+        if quant:
+            model_cfg["quantization"] = quant
+
     cfg: Dict[str, Any] = {"model": {"Fast_dVLM": model_cfg}, "data": {}}
     for name in datasets:
         cfg["data"][name] = {"class": dataset_class, "dataset": name}
@@ -38,11 +66,12 @@ def write_vlmeval_config() -> None:
     cfg_path = os.environ["CFG_PATH"]
     with open(cfg_path, "w", encoding="utf-8") as f:
         json.dump(cfg, f, indent=2)
-    print(f"[config] Saved to: {cfg_path}")
+    print(f"[config] Saved to: {cfg_path} (backend={backend})")
 
 
 class Fast_dVLM:
-    """VLMEval wrapper: loads Fast-dVLM (or any trust_remote_code) checkpoint and calls its ``generate``."""
+    """VLMEval wrapper for Fast-dVLM. Backend ``hf`` (checkpoint ``generate``) or
+    ``sglang`` (vendored SGLang fork ``sgl.Engine``)."""
 
     def __init__(
         self,
@@ -52,16 +81,32 @@ class Fast_dVLM:
         max_tokens: int = 2048,
         block_size: Optional[int] = None,
         mask_token: str = "|<MASK>|",
+        backend: str = "hf",
+        algorithm: str = "mdm",
+        quantization: Optional[str] = None,
+        mem_fraction_static: float = 0.75,
         **kwargs: Any,
     ) -> None:
-        import torch
-        from transformers import AutoModelForCausalLM, AutoProcessor, AutoTokenizer
-
         _ = kwargs  # VLMEval may pass extra keys from template configs
+        self.backend = (backend or "hf").strip().lower()
         self.processor_path = processor_path or model_path
+        self.model_path = model_path
         self.max_tokens = int(max_tokens)
         self._block_size = int(block_size) if block_size is not None else None
         self.mask_token = mask_token
+        self.algorithm = (algorithm or "mdm").strip().lower()
+        self.quantization = quantization or None
+        self.mem_fraction_static = float(mem_fraction_static)
+
+        if self.backend == "sglang":
+            self._init_sglang(torch_dtype)
+        else:
+            self._init_hf(torch_dtype)
+
+    # --- HF backend (unchanged behavior) ---------------------------------
+    def _init_hf(self, torch_dtype: Union[str, Any]) -> None:
+        import torch
+        from transformers import AutoModelForCausalLM, AutoProcessor, AutoTokenizer
 
         if torch.cuda.is_available():
             torch.cuda.set_device(0)
@@ -76,7 +121,7 @@ class Fast_dVLM:
                 td = "auto"
 
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_path,
+            self.model_path,
             torch_dtype=td,
             device_map="cuda:0",
             trust_remote_code=True,
@@ -84,7 +129,7 @@ class Fast_dVLM:
         self.model.eval()
 
         self.processor = AutoProcessor.from_pretrained(self.processor_path, use_fast=False)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path)
         self.processor.tokenizer = self.tokenizer
 
         self._eos = int(
@@ -93,6 +138,87 @@ class Fast_dVLM:
             or 151645
         )
 
+    # --- SGLang backend (mirrors run_chatbot_sglang.py) ------------------
+    def _init_sglang(self, torch_dtype: Union[str, Any]) -> None:
+        from transformers import AutoProcessor, AutoTokenizer
+
+        # `import sglang` must resolve to the pip-installed fork
+        # (third_party/sglang); drop this script's dir so a stray local
+        # `sglang/` next to it can't shadow the package.
+        here = os.path.dirname(os.path.abspath(__file__))
+        sys.path[:] = [p for p in sys.path if os.path.abspath(p) != here]
+        os.environ.setdefault("SGLANG_DISABLE_CUDNN_CHECK", "1")
+
+        import sglang as sgl
+
+        self.processor = AutoProcessor.from_pretrained(self.processor_path, use_fast=False)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_path, trust_remote_code=True)
+        self.processor.tokenizer = self.tokenizer
+
+        if self.algorithm not in ALGO_MAP:
+            raise ValueError(
+                f"Unknown sglang algorithm {self.algorithm!r}; expected one of {list(ALGO_MAP)}"
+            )
+        dllm_algo = ALGO_MAP[self.algorithm]
+
+        dtype = torch_dtype if isinstance(torch_dtype, str) and torch_dtype else "bfloat16"
+        if dtype not in ("bfloat16", "float16", "half", "auto"):
+            dtype = "bfloat16"
+
+        engine_kwargs: Dict[str, Any] = dict(
+            model_path=self.model_path,
+            trust_remote_code=True,
+            dtype=dtype,
+            mem_fraction_static=self.mem_fraction_static,
+            max_running_requests=1,
+            chunked_prefill_size=16384,
+            dllm_algorithm=dllm_algo,
+            disable_cuda_graph=False,
+            log_level="warning",
+            enable_metrics=True,
+            mm_attention_backend="triton_attn",
+        )
+        if self.quantization:
+            engine_kwargs["quantization"] = self.quantization
+
+        print(
+            f"[Fast_dVLM] Launching sglang Engine dllm_algorithm={dllm_algo}"
+            f"{f', quantization={self.quantization}' if self.quantization else ''} ..."
+        )
+        # run_eval.sh launches us under `torchrun` for data-parallel sharding
+        # (each rank = one independent worker). torchrun injects RANK/
+        # WORLD_SIZE/MASTER_PORT/TORCHELASTIC_* into the env. sgl.Engine forks
+        # a scheduler subprocess that, seeing those vars, tries to join a
+        # torch.distributed group / TCPStore nobody serves -> 600s TCPStore
+        # timeout and hang. Each rank must run an *independent* single-GPU
+        # engine, so scrub those vars only across Engine construction, then
+        # restore them so VLMEvalKit's RANK/WORLD_SIZE dataset sharding and
+        # result aggregation still work afterwards.
+        _DIST_ENV_KEYS = (
+            "RANK", "LOCAL_RANK", "WORLD_SIZE", "LOCAL_WORLD_SIZE",
+            "GROUP_RANK", "GROUP_WORLD_SIZE", "ROLE_RANK", "ROLE_WORLD_SIZE",
+            "ROLE_NAME", "MASTER_ADDR", "MASTER_PORT",
+            "TORCHELASTIC_RUN_ID", "TORCHELASTIC_RESTART_COUNT",
+            "TORCHELASTIC_MAX_RESTARTS", "TORCHELASTIC_USE_AGENT_STORE",
+            "TORCHELASTIC_ERROR_FILE", "TORCH_NCCL_ASYNC_ERROR_HANDLING",
+            "PET_NPROC_PER_NODE",
+        )
+        _saved_env = {k: os.environ.pop(k) for k in _DIST_ENV_KEYS if k in os.environ}
+        try:
+            self.engine = sgl.Engine(**engine_kwargs)
+        finally:
+            os.environ.update(_saved_env)
+        atexit.register(self._shutdown_engine)
+
+    def _shutdown_engine(self) -> None:
+        eng = getattr(self, "engine", None)
+        if eng is not None:
+            try:
+                eng.shutdown()
+            except Exception:
+                pass
+            self.engine = None
+
     def _build_user_messages(self, image: Optional[str], prompt: str) -> List[Dict[str, Any]]:
         content: List[Dict[str, Any]] = []
         if image:
@@ -100,7 +226,35 @@ class Fast_dVLM:
         content.append({"type": "text", "text": prompt})
         return [{"role": "user", "content": content}]
 
-    def _generate_one(self, prompt: str, image: Optional[str]) -> str:
+    def _build_input_ids(self, prompt: str, image: Optional[str]) -> List[int]:
+        from qwen_vl_utils import process_vision_info
+
+        messages = self._build_user_messages(image, prompt)
+        text = self.processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
+        image_inputs, video_inputs = process_vision_info(messages)
+        inputs = self.processor(
+            text=[text],
+            images=image_inputs,
+            videos=video_inputs,
+            padding=True,
+            return_tensors="pt",
+        )
+        return inputs.input_ids[0].tolist()
+
+    def _generate_one_sglang(self, prompt: str, image: Optional[str]) -> str:
+        input_ids = self._build_input_ids(prompt, image)
+        out = self.engine.generate(
+            input_ids=input_ids,
+            image_data=[image] if image else None,
+            sampling_params={"max_new_tokens": self.max_tokens, "temperature": 0.0},
+        )
+        if isinstance(out, list):
+            out = out[0]
+        return out["text"]
+
+    def _generate_one_hf(self, prompt: str, image: Optional[str]) -> str:
         import torch
         from qwen_vl_utils import process_vision_info
 
@@ -143,6 +297,11 @@ class Fast_dVLM:
             trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
         )
         return out[0] if out else ""
+
+    def _generate_one(self, prompt: str, image: Optional[str]) -> str:
+        if self.backend == "sglang":
+            return self._generate_one_sglang(prompt, image)
+        return self._generate_one_hf(prompt, image)
 
     def generate(
         self,

@@ -22,6 +22,11 @@ show_help() {
     echo "Optional: TASK OUTPUT_BASE NUM_GPUS VLM_DIR"
     echo "          PROCESSOR_PATH (default: same as MODEL_PATH; set if weights dir has no processor)"
     echo "          DATASET_CLASS (default ImageVQADataset) MAX_TOKENS BLOCK_SIZE MASK_TOKEN TORCH_DTYPE"
+    echo "          BACKEND (hf|sglang, default hf)"
+    echo "          When BACKEND=sglang: ALGORITHM (mdm|spec, default mdm)"
+    echo "                               QUANTIZATION (e.g. w8a8_fp8; needs SM89+)"
+    echo "                               MEM_FRACTION_STATIC (default 0.75)"
+    echo "                               (requires: pip install -e ${REPO_ROOT}/third_party/sglang/python)"
     exit 0
 }
 [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ] && show_help
@@ -82,6 +87,10 @@ export MAX_TOKENS="${MAX_TOKENS:-2048}"
 export BLOCK_SIZE="${BLOCK_SIZE:-}"
 export MASK_TOKEN="${MASK_TOKEN:-|<MASK>|}"
 export TORCH_DTYPE="${TORCH_DTYPE:-bfloat16}"
+export BACKEND="${BACKEND:-hf}"
+export ALGORITHM="${ALGORITHM:-mdm}"
+[ -n "${QUANTIZATION:-}" ] && export QUANTIZATION
+export MEM_FRACTION_STATIC="${MEM_FRACTION_STATIC:-0.75}"
 
 echo "Writing config -> ${CFG_PATH}"
 python3 "${VLMEVAL_PY}" write-config
