@@ -160,11 +160,14 @@ This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE
 If you find this work useful, please cite our papers:
 
 ```bibtex
-@misc{fastddrive2026,
-      title={Fast-dDrive: Section-Aware Diffusion VLMs for End-to-End Driving},
-      author={Anonymous},
+@misc{zhang2026fastddriveefficientblockdiffusionvlm,
+      title={Fast-dDrive: Efficient Block-Diffusion VLM for Autonomous Driving},
+      author={Kewei Zhang and Jin Wang and Sensen Gao and Chengyue Wu and Yulong Cao and Songyang Han and Boris Ivanovic and Langechuan Liu and Marco Pavone and Song Han and Daquan Zhou and Enze Xie},
       year={2026},
-      note={Under review at NeurIPS 2026},
+      eprint={2605.23163},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2605.23163},
 }
 @misc{wu2026fastdvlmefficientblockdiffusionvlm,
       title={Fast-dVLM: Efficient Block-Diffusion VLM via Direct Conversion from Autoregressive VLM},
