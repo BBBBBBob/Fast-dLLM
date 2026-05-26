@@ -14,6 +14,8 @@ class AutoModel:
         arch_type = model_args.arch_type
         if arch_type == "decoder_only":
             return HFDecoderModel(model_args, *args, **kwargs)
+        elif arch_type == "auto_model":  # Fast-dDrive: alias for decoder_only that signals HF auto-loading.
+            return HFDecoderModel(model_args, *args, **kwargs)
         elif arch_type == "text_regression":
             return HFTextRegressionModel(model_args, *args, **kwargs)
         elif arch_type == "encoder_decoder" or \

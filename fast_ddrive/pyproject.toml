@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64,<81", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fast-ddrive"
+version = "0.1.0"
+description = "Fast-dDrive: Section-Aware Diffusion VLM for autonomous driving (Waymo E2E)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+
+# Note: the lmflow package lives at Fast-dLLM/third_party/lmflow/ (shared with
+# fast_dvlm); fast_ddrive itself only ships driving-specific entry points and
+# the speculative-decoding helpers under fast_ddrive/models/.
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["models*"]

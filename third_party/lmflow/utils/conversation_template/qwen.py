@@ -200,6 +200,12 @@ Fast_dLLM_v2_TEMPLATE = (
     "{%- endif %}"
 )
 
+# Fast-dDrive: clearer alias for the same template; both names resolve to the
+# identical jinja string so existing scripts using ``Fast_dLLM_v2_TEMPLATE``
+# keep working.
+QWEN2_5_TEMPLATE_NO_REASONING = Fast_dLLM_v2_TEMPLATE
+
+
 QWEN2_5_1M_TEMPLATE = (
     "{%- if tools %}"
     "{{- '<|im_start|>system\\n' }}"
