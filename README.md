@@ -3,6 +3,7 @@
 [![arXiv v1](https://img.shields.io/badge/Paper-v1-red.svg)](https://arxiv.org/abs/2505.22618)
 [![arXiv v2](https://img.shields.io/badge/Paper-v2-red.svg)](https://arxiv.org/abs/2509.26328)
 [![arXiv dVLM](https://img.shields.io/badge/Paper-dVLM-red.svg)](https://arxiv.org/abs/2604.06832)
+[![arXiv dDrive](https://img.shields.io/badge/Paper-dDrive-red.svg)](https://arxiv.org/abs/2605.23163)
 <a href="https://fast-dllm.hanlab.ai"><img src="https://img.shields.io/static/v1?label=Demo&message=Fast-dLLM&color=yellow"></a> &ensp;
 
 <h4 align="center"> ICLR 2026 </h4>
@@ -11,7 +12,7 @@ Fast-dLLM is a family of acceleration techniques for diffusion-based Large Langu
 
 | | Fast-dLLM v1 | Fast-dLLM v2 | Fast-dVLM | Fast-dDrive |
 |---|---|---|---|---|
-| **Paper** | [Training-free Acceleration of Diffusion LLM](https://arxiv.org/abs/2505.22618) | [Efficient Block-Diffusion LLM](https://arxiv.org/abs/2509.26328) | [Block-Diffusion VLM via Direct Conversion](https://arxiv.org/abs/2604.06832) | Section-Aware Diffusion VLA for End-to-End Driving (under review) |
+| **Paper** | [Training-free Acceleration of Diffusion LLM](https://arxiv.org/abs/2505.22618) | [Efficient Block-Diffusion LLM](https://arxiv.org/abs/2509.26328) | [Block-Diffusion VLM via Direct Conversion](https://arxiv.org/abs/2604.06832) | [Efficient Block-Diffusion VLM for Autonomous Driving](https://arxiv.org/abs/2605.23163) |
 | **Modality** | Text | Text | Vision + Text | Vision + Text + Action (driving) |
 | **Approach** | Training-free inference acceleration | Block diffusion with fine-tuning | Direct AR-to-diffusion VLM conversion | Section-aware block diffusion + scaffold speculative decoding |
 | **Backbone** | [Dream](https://github.com/dream-project/dream), [LLaDA](https://github.com/llada-project/llada) | [Qwen2.5](https://github.com/QwenLM/Qwen2.5) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) |
@@ -20,7 +21,7 @@ Fast-dLLM is a family of acceleration techniques for diffusion-based Large Langu
 | **Model** | — | [Fast_dLLM_v2_7B](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B) | [Fast_dVLM_3B](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B) | [Fast-dDrive](https://huggingface.co/xiwenyoumu/Fast-dDrive) |
 
 ## News
-* (🔥 New) [2026/05/26] **Fast-dDrive** is released! Section-Aware Structured Diffusion VLA for end-to-end autonomous driving on Waymo (WOD-E2E). Combines Scaffold Speculative Decoding with SASD training for SOTA ADE / RFS at over 200 TPS on a single H100 (up to **12x** over the AR baseline with SGLang). Check out [`fast_ddrive/`](fast_ddrive/) and the [model](https://huggingface.co/xiwenyoumu/Fast-dDrive).
+* (🔥 New) [2026/05/26] **Fast-dDrive** is released! Section-Aware Structured Diffusion VLA for end-to-end autonomous driving on Waymo (WOD-E2E). Combines Scaffold Speculative Decoding with SASD training for SOTA ADE / RFS at over 200 TPS on a single H100 (up to **12x** over the AR baseline with SGLang). Check out [`fast_ddrive/`](fast_ddrive/), the [model](https://huggingface.co/xiwenyoumu/Fast-dDrive), and the [paper](https://arxiv.org/abs/2605.23163).
 * [2026/04/10] **Fast-dVLM** is released! Up to **6.18x speedup** over AR baseline while matching quality across 11 benchmarks. Check out our [webpage](https://nvlabs.github.io/Fast-dLLM/fast_dvlm/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B), and [paper](https://arxiv.org/abs/2604.06832)!
 * (🔥 New) [2026/01/26] **Fast-dLLM v1/v2 is accepted by ICLR-2026.** 🎉🎉🎉
 * \[2025.10.08\] We have open sourced Fast-dLLM v2. Have a look at our [webpage](https://nvlabs.github.io/Fast-dLLM/v2/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B), and [paper](https://arxiv.org/pdf/2509.26328)!
