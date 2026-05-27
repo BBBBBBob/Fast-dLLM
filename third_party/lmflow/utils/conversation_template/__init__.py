@@ -29,6 +29,8 @@ from .qwen import (
     Fast_dLLM_v2_TEMPLATE,
     QWEN3_TEMPLATE
 )
+# Fast-dDrive: import the Fast-dDrive-style alias for the same template.
+from .qwen import QWEN2_5_TEMPLATE_NO_REASONING
 from .yi import YI1_5_TEMPLATE
 from .zephyr import ZEPHYR_TEMPLATE
 
@@ -64,6 +66,7 @@ JINJA_TEMPLATES = {
     'deepseek_v3': DEEPSEEK_V3_TEMPLATE,
     'qwen2_5': QWEN2_5_TEMPLATE,
     'fast_dllm_v2': Fast_dLLM_v2_TEMPLATE,
+    'qwen2_5_no_reasoning': QWEN2_5_TEMPLATE_NO_REASONING,  # Fast-dDrive alias for the same template
     'qwen2_5_1m': QWEN2_5_1M_TEMPLATE,
     'qwen2_5_math': QWEN2_5_MATH_TEMPLATE,
     'qwen_qwq': QWEN_QWQ_TEMPLATE,

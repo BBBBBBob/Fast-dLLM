@@ -365,6 +365,33 @@ class ModelArguments:
     )
     
 
+    # ── Fast-dDrive extensions: MDM block-causal / SASD knobs ────────────────
+    # The following fields are *additive*; their defaults are no-ops so any
+    # existing training recipe that does not pass them sees identical
+    # behavior. They are consumed by ``fast_ddrive/train_scripts/finetune_fast_ddrive.py``
+    # to configure the deep JSON scaffold + Section-Importance-Weighted Loss +
+    # Section-Adaptive Noise Schedule on the model.
+    complementary_mask: Optional[bool] = field(default=False, metadata={"help": "MDM: enable complementary masking within blocks."})
+    always_mask_im_end: Optional[bool] = field(default=False, metadata={"help": "MDM: always mask image-end tokens during training."})
+    flexible_bd_size: Optional[bool] = field(default=False, metadata={"help": "MDM: allow variable block size during training."})
+    use_block_causal_mask: Optional[bool] = field(default=False, metadata={"help": "MDM: enable block-causal attention masking."})
+    anneal_block_size: Optional[bool] = field(default=False, metadata={"help": "MDM: anneal the block size across training."})
+    block_causal_no_dynamic: Optional[bool] = field(default=False, metadata={"help": "MDM: disable dynamic block-causal mask shaping."})
+    minimum_noise_level: Optional[float] = field(default=1e-3, metadata={"help": "MDM: minimum noise level (lower clamp on the Beta noise sample)."})
+    entropy_loss: Optional[bool] = field(default=False, metadata={"help": "MDM: add an entropy-regularization term to the loss."})
+    entropy_loss_weight: Optional[float] = field(default=1.0, metadata={"help": "Weight on the entropy-regularization term."})
+    enable_efficient_vision_embed: Optional[bool] = field(default=False, metadata={"help": "Skip recomputing vision tokens when they are present in cache."})
+    learn_padding: Optional[bool] = field(default=False, metadata={"help": "MDM: train on padding tokens (alias of pad_mask_token for backwards-compatible launchers)."})
+    cp_size: Optional[int] = field(default=1, metadata={"help": "Context-parallel sharding factor (1 = disabled). Research-only; > 1 raises in the release build."})
+    use_section_moe_lora: Optional[bool] = field(default=False, metadata={"help": "Use Section-MoE-LoRA. Research-only; setting True raises in the release build."})
+    deep_json_scaffold: Optional[bool] = field(default=False, metadata={"help": "Enable Fast-dDrive's deep JSON scaffold (frozen structural tokens) during MDM training."})
+    section_token_budgets: Optional[str] = field(default=None, metadata={"help": "JSON string mapping section name → token budget; consumed by the deep-scaffold builder."})
+    section_loss_weights: Optional[str] = field(default=None, metadata={"help": "JSON string mapping section name → per-section CE-loss weight (SASD IWL)."})
+    section_noise_schedule: Optional[str] = field(default=None, metadata={"help": 'JSON string mapping section name → "alpha,beta" of a Beta noise schedule (SASD SNS).'})
+    freeze_vision_encoder: Optional[bool] = field(default=False, metadata={"help": "Freeze the vision encoder parameters during finetuning."})
+    # ─────────────────────────────────────────────────────────────────────────
+
+
     def __post_init__(self):
         if self.config_overrides is not None and (self.config_name is not None or self.model_name_or_path is not None):
             raise ValueError(

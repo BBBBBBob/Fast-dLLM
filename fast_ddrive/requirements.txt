@@ -1,0 +1,30 @@
+# Mirrors fast_dvlm/requirements.txt; PyTorch cu124 wheels avoid cu130 driver requirements.
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+# Core inference / training stack
+torch==2.6.0
+torchvision==0.21.0
+transformers==4.57.1
+tokenizers>=0.13.3
+accelerate>=1.5.0
+peft>=0.10.0
+datasets==2.14.6
+pyarrow==18.0.0
+deepspeed>=0.14.4
+evaluate==0.4.0
+sentencepiece
+einops>=0.6.1
+qwen-vl-utils==0.0.14
+Pillow>=10.0.0
+numpy
+tqdm
+
+# lmflow vendored under fast_ddrive/lmflow still uses pkg_resources via versioning util.
+setuptools>=64,<81
+cpm_kernels==1.0.11
+wandb
+
+# Optional: Waymo official ADE / RFS metrics (separate `autovla` env recommended;
+# tensorflow + waymo_open_dataset conflict with the main inference stack).
+# tensorflow==2.12.0
+# waymo-open-dataset-tf-2-12-0

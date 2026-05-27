@@ -3,24 +3,26 @@
 [![arXiv v1](https://img.shields.io/badge/Paper-v1-red.svg)](https://arxiv.org/abs/2505.22618)
 [![arXiv v2](https://img.shields.io/badge/Paper-v2-red.svg)](https://arxiv.org/abs/2509.26328)
 [![arXiv dVLM](https://img.shields.io/badge/Paper-dVLM-red.svg)](https://arxiv.org/abs/2604.06832)
+[![arXiv dDrive](https://img.shields.io/badge/Paper-dDrive-red.svg)](https://arxiv.org/abs/2605.23163)
 <a href="https://fast-dllm.hanlab.ai"><img src="https://img.shields.io/static/v1?label=Demo&message=Fast-dLLM&color=yellow"></a> &ensp;
 
 <h4 align="center"> ICLR 2026 </h4>
 
-Fast-dLLM is a family of acceleration techniques for diffusion-based Large Language Models (dLLMs) and Vision-Language Models (dVLMs). This repository contains:
+Fast-dLLM is a family of acceleration techniques for diffusion-based Large Language Models (dLLMs), Vision-Language Models (dVLMs), and Vision-Language-Action (VLA) models. This repository contains:
 
-| | Fast-dLLM v1 | Fast-dLLM v2 | Fast-dVLM |
-|---|---|---|---|
-| **Paper** | [Training-free Acceleration of Diffusion LLM](https://arxiv.org/abs/2505.22618) | [Efficient Block-Diffusion LLM](https://arxiv.org/abs/2509.26328) | [Block-Diffusion VLM via Direct Conversion](https://arxiv.org/abs/2604.06832) |
-| **Modality** | Text | Text | Vision + Text |
-| **Approach** | Training-free inference acceleration | Block diffusion with fine-tuning | Direct AR-to-diffusion VLM conversion |
-| **Backbone** | [Dream](https://github.com/dream-project/dream), [LLaDA](https://github.com/llada-project/llada) | [Qwen2.5](https://github.com/QwenLM/Qwen2.5) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) |
-| **Key Techniques** | KV Cache + Parallel Decoding | Block Diffusion + Hierarchical Caching | Block-Size Annealing + Speculative Decoding |
-| **Code** | [`v1/`](v1/) | [`v2/`](v2/) | [`fast_dvlm/`](fast_dvlm/) |
-| **Model** | — | [Fast_dLLM_v2_7B](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B) | [Fast_dVLM_3B](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B) |
+| | Fast-dLLM v1 | Fast-dLLM v2 | Fast-dVLM | Fast-dDrive |
+|---|---|---|---|---|
+| **Paper** | [Training-free Acceleration of Diffusion LLM](https://arxiv.org/abs/2505.22618) | [Efficient Block-Diffusion LLM](https://arxiv.org/abs/2509.26328) | [Block-Diffusion VLM via Direct Conversion](https://arxiv.org/abs/2604.06832) | [Efficient Block-Diffusion VLM for Autonomous Driving](https://arxiv.org/abs/2605.23163) |
+| **Modality** | Text | Text | Vision + Text | Vision + Text + Action (driving) |
+| **Approach** | Training-free inference acceleration | Block diffusion with fine-tuning | Direct AR-to-diffusion VLM conversion | Section-aware block diffusion + scaffold speculative decoding |
+| **Backbone** | [Dream](https://github.com/dream-project/dream), [LLaDA](https://github.com/llada-project/llada) | [Qwen2.5](https://github.com/QwenLM/Qwen2.5) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) |
+| **Key Techniques** | KV Cache + Parallel Decoding | Block Diffusion + Hierarchical Caching | Block-Size Annealing + Speculative Decoding | SASD Training + Scaffold Spec + Test-Time Inference Scaling |
+| **Code** | [`v1/`](v1/) | [`v2/`](v2/) | [`fast_dvlm/`](fast_dvlm/) | [`fast_ddrive/`](fast_ddrive/) |
+| **Model** | — | [Fast_dLLM_v2_7B](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B) | [Fast_dVLM_3B](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B) | [Fast-dDrive](https://huggingface.co/xiwenyoumu/Fast-dDrive) |
 
 ## News
-* (🔥 New) [2026/04/10] **Fast-dVLM** is released! Up to **6.18x speedup** over AR baseline while matching quality across 11 benchmarks. Check out our [webpage](https://nvlabs.github.io/Fast-dLLM/fast_dvlm/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B), and [paper](https://arxiv.org/abs/2604.06832)!
+* (🔥 New) [2026/05/26] **Fast-dDrive** is released! Section-Aware Structured Diffusion VLA for end-to-end autonomous driving on Waymo (WOD-E2E). Combines Scaffold Speculative Decoding with SASD training for SOTA ADE / RFS at over 200 TPS on a single H100 (up to **12x** over the AR baseline with SGLang). Check out [`fast_ddrive/`](fast_ddrive/), the [model](https://huggingface.co/xiwenyoumu/Fast-dDrive), and the [paper](https://arxiv.org/abs/2605.23163).
+* [2026/04/10] **Fast-dVLM** is released! Up to **6.18x speedup** over AR baseline while matching quality across 11 benchmarks. Check out our [webpage](https://nvlabs.github.io/Fast-dLLM/fast_dvlm/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B), and [paper](https://arxiv.org/abs/2604.06832)!
 * (🔥 New) [2026/01/26] **Fast-dLLM v1/v2 is accepted by ICLR-2026.** 🎉🎉🎉
 * \[2025.10.08\] We have open sourced Fast-dLLM v2. Have a look at our [webpage](https://nvlabs.github.io/Fast-dLLM/v2/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B), and [paper](https://arxiv.org/pdf/2509.26328)!
 * \[2025.08.01\] Our new online demo of Fast-dLLM: https://fast-dllm.hanlab.ai/, welcome to try!
@@ -32,6 +34,7 @@ Fast-dLLM is a family of acceleration techniques for diffusion-based Large Langu
 - \[✅\] Inference and evaluation code
 - \[✅\] Training code of Fast-dLLM v2
 - \[✅\] Fast-dVLM: Block-diffusion VLM
+- \[✅\] Fast-dDrive: Block-diffusion VLA for autonomous driving
 - \[🚀\] vLLM support
 
 ## Project Structure
@@ -53,6 +56,7 @@ Fast-dLLM/
 │   ├── requirements.txt
 │   └── README.md
 ├── fast_dvlm/              # Fast-dVLM: Block-diffusion VLM (chatbot, optional finetune sample, VLMEval; see fast_dvlm/README.md)
+├── fast_ddrive/            # Fast-dDrive: Block-diffusion VLA for autonomous driving on Waymo E2E (see fast_ddrive/README.md)
 ├── CONTRIBUTING.md
 ├── LICENSE
 └── README.md               # This file
@@ -112,6 +116,38 @@ python run_chatbot.py
 
 For full details, see [fast_dvlm/README.md](fast_dvlm/README.md).
 
+### Fast-dDrive (Block-Diffusion VLA for Autonomous Driving)
+
+```bash
+cd fast_ddrive
+pip install -r requirements.txt
+
+# Single-shot demo: Scaffold Spec decoding on one driving frame.
+python run_chatbot.py \
+    --model_path xiwenyoumu/Fast-dDrive \
+    --image data/example/images/161_CAM_FRONT.jpg \
+    --prompt "Describe the driving scene and produce a 5-second plan."
+
+# Waymo E2E validation eval (paper canonical Scaffold Spec, multi-GPU).
+MODEL_PATH=xiwenyoumu/Fast-dDrive EVAL_JSON=/path/to/waymo_val.json \
+    IMAGE_ROOT=/path/to/image_root bash run_eval.sh
+```
+
+Three decoding paths are exposed via `--mode` / `MODE`:
+`section_diffusion` (SD), `scaffold_spec` (SS — paper canonical), and
+`inference_scaling` (SS multi-trajectory rollouts).
+
+**Fine-tuning (SASD):** mirrors the fast_dvlm DeepSpeed launcher and reuses the
+same vendored LMFlow under [`third_party/`](third_party/) (with a small set of
+pure-addition SASD hooks). Provide a Waymo training JSON + image root, then:
+
+```bash
+DATASET_PATH=/path/to/waymo_train.json IMAGE_FOLDER=/path/to/image_root \
+    bash fast_ddrive/train_scripts/train_waymo_sasd.sh
+```
+
+For full details, see [fast_ddrive/README.md](fast_ddrive/README.md).
+
 ## Contributing
 
 Issues and Pull Requests are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
@@ -125,6 +161,15 @@ This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE
 If you find this work useful, please cite our papers:
 
 ```bibtex
+@misc{zhang2026fastddriveefficientblockdiffusionvlm,
+      title={Fast-dDrive: Efficient Block-Diffusion VLM for Autonomous Driving},
+      author={Kewei Zhang and Jin Wang and Sensen Gao and Chengyue Wu and Yulong Cao and Songyang Han and Boris Ivanovic and Langechuan Liu and Marco Pavone and Song Han and Daquan Zhou and Enze Xie},
+      year={2026},
+      eprint={2605.23163},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2605.23163},
+}
 @misc{wu2026fastdvlmefficientblockdiffusionvlm,
       title={Fast-dVLM: Efficient Block-Diffusion VLM via Direct Conversion from Autoregressive VLM},
       author={Chengyue Wu and Shiyi Lan and Yonggan Fu and Sensen Gao and Jin Wang and Jincheng Yu and Jose M. Alvarez and Pavlo Molchanov and Ping Luo and Song Han and Ligeng Zhu and Enze Xie},
