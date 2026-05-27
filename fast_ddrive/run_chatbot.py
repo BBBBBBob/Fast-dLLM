@@ -24,8 +24,9 @@ _MODES = {
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--model_path", required=True,
-                   help="Fast-dDrive checkpoint directory or HuggingFace id.")
+    p.add_argument("--model_path", default="xiwenyoumu/Fast-dDrive",
+                   help="Fast-dDrive checkpoint directory or HuggingFace id "
+                        "(default: xiwenyoumu/Fast-dDrive on the Hugging Face Hub).")
     p.add_argument("--image", required=True, help="Path to a single image.")
     p.add_argument("--prompt", required=True, help="Text prompt.")
     p.add_argument("--mode", default="scaffold_spec", choices=sorted(_MODES),

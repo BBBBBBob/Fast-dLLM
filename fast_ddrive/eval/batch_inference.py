@@ -1139,8 +1139,9 @@ def main():
         description="Fast-dDrive — Waymo E2E open-loop evaluation.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--model_path", required=True,
-                        help="Fast-dDrive checkpoint directory (or HuggingFace id).")
+    parser.add_argument("--model_path", default="xiwenyoumu/Fast-dDrive",
+                        help="Fast-dDrive checkpoint directory or HuggingFace id "
+                             "(default: xiwenyoumu/Fast-dDrive paper checkpoint).")
     parser.add_argument("--eval_json", required=True,
                         help="Waymo E2E validation JSON.")
     parser.add_argument("--image_root", required=True,
