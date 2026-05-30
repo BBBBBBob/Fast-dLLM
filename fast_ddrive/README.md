@@ -1,6 +1,6 @@
 # Fast-dDrive: Section-Aware Diffusion VLM for End-to-End Driving
 
-[![Model](https://img.shields.io/badge/🤗-Model-yellow)](https://huggingface.co/xiwenyoumu/Fast-dDrive)
+[![Model](https://img.shields.io/badge/🤗-Model-yellow)](https://huggingface.co/Efficient-Large-Model/Fast-dDrive)
 
 Fast-dDrive is a Qwen2.5-VL-based block-diffusion model for closed-loop
 driving on the Waymo End-to-End Driving benchmark (WOD-E2E). It combines:
@@ -37,7 +37,7 @@ the paper.
 pip install -r fast_ddrive/requirements.txt
 ```
 
-The released checkpoint lives at [`xiwenyoumu/Fast-dDrive`](https://huggingface.co/xiwenyoumu/Fast-dDrive).
+The released checkpoint lives at [`Efficient-Large-Model/Fast-dDrive`](https://huggingface.co/Efficient-Large-Model/Fast-dDrive).
 The model class and its three decoding paths ship with that repo; every
 entry script loads them via `trust_remote_code=True`. There is no local
 `fast_ddrive/models/` directory.
@@ -47,7 +47,7 @@ entry script loads them via `trust_remote_code=True`. There is no local
 ### Single-shot chat
 
 ```bash
-# Defaults to --model_path xiwenyoumu/Fast-dDrive (paper checkpoint).
+# Defaults to --model_path Efficient-Large-Model/Fast-dDrive (paper checkpoint).
 python fast_ddrive/run_chatbot.py \
     --image fast_ddrive/data/example/images/227_CAM_FRONT.jpg \
     --prompt "Describe the driving scene and produce a 5-second plan."

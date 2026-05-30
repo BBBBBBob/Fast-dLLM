@@ -7,7 +7,7 @@
 #
 # Optional env:
 #   MODEL_PATH   — Fast-dDrive checkpoint dir or HuggingFace id
-#                  (default: xiwenyoumu/Fast-dDrive — paper checkpoint on the HF Hub)
+#                  (default: Efficient-Large-Model/Fast-dDrive — paper checkpoint on the HF Hub)
 #   MODE         — section_diffusion | scaffold_spec | inference_scaling
 #                  (default: scaffold_spec — paper canonical SS)
 #   OUTPUT_DIR   — default: fast_ddrive/eval_outputs/<ckpt_basename>_<mode>
@@ -18,7 +18,7 @@ set -eo pipefail
 
 FAST_DDRIVE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-MODEL_PATH="${MODEL_PATH:-xiwenyoumu/Fast-dDrive}"
+MODEL_PATH="${MODEL_PATH:-Efficient-Large-Model/Fast-dDrive}"
 : "${EVAL_JSON:?Set EVAL_JSON to the Waymo E2E val JSON path.}"
 : "${IMAGE_ROOT:?Set IMAGE_ROOT to the directory referenced by EVAL_JSON image paths.}"
 

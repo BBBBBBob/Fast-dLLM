@@ -18,10 +18,10 @@ Fast-dLLM is a family of acceleration techniques for diffusion-based Large Langu
 | **Backbone** | [Dream](https://github.com/dream-project/dream), [LLaDA](https://github.com/llada-project/llada) | [Qwen2.5](https://github.com/QwenLM/Qwen2.5) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) | [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL) |
 | **Key Techniques** | KV Cache + Parallel Decoding | Block Diffusion + Hierarchical Caching | Block-Size Annealing + Speculative Decoding | SASD Training + Scaffold Spec + Test-Time Inference Scaling |
 | **Code** | [`v1/`](v1/) | [`v2/`](v2/) | [`fast_dvlm/`](fast_dvlm/) | [`fast_ddrive/`](fast_ddrive/) |
-| **Model** | — | [Fast_dLLM_v2_7B](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B) | [Fast_dVLM_3B](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B) | [Fast-dDrive](https://huggingface.co/xiwenyoumu/Fast-dDrive) |
+| **Model** | — | [Fast_dLLM_v2_7B](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B) | [Fast_dVLM_3B](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B) | [Fast-dDrive](https://huggingface.co/Efficient-Large-Model/Fast-dDrive) |
 
 ## News
-* (🔥 New) [2026/05/26] **Fast-dDrive** is released! Section-Aware Structured Diffusion VLA for end-to-end autonomous driving on Waymo (WOD-E2E). Combines Scaffold Speculative Decoding with SASD training for SOTA ADE / RFS at over 200 TPS on a single H100 (up to **12x** over the AR baseline with SGLang). Check out [`fast_ddrive/`](fast_ddrive/), the [model](https://huggingface.co/xiwenyoumu/Fast-dDrive), and the [paper](https://arxiv.org/abs/2605.23163).
+* (🔥 New) [2026/05/26] **Fast-dDrive** is released! Section-Aware Structured Diffusion VLA for end-to-end autonomous driving on Waymo (WOD-E2E). Combines Scaffold Speculative Decoding with SASD training for SOTA ADE / RFS at over 200 TPS on a single H100 (up to **12x** over the AR baseline with SGLang). Check out [`fast_ddrive/`](fast_ddrive/), the [model](https://huggingface.co/Efficient-Large-Model/Fast-dDrive), and the [paper](https://arxiv.org/abs/2605.23163).
 * [2026/04/10] **Fast-dVLM** is released! Up to **6.18x speedup** over AR baseline while matching quality across 11 benchmarks. Check out our [webpage](https://nvlabs.github.io/Fast-dLLM/fast_dvlm/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dVLM_3B), and [paper](https://arxiv.org/abs/2604.06832)!
 * (🔥 New) [2026/01/26] **Fast-dLLM v1/v2 is accepted by ICLR-2026.** 🎉🎉🎉
 * \[2025.10.08\] We have open sourced Fast-dLLM v2. Have a look at our [webpage](https://nvlabs.github.io/Fast-dLLM/v2/), [model](https://huggingface.co/Efficient-Large-Model/Fast_dLLM_v2_7B), and [paper](https://arxiv.org/pdf/2509.26328)!
@@ -124,12 +124,12 @@ pip install -r requirements.txt
 
 # Single-shot demo: Scaffold Spec decoding on one driving frame.
 python run_chatbot.py \
-    --model_path xiwenyoumu/Fast-dDrive \
+    --model_path Efficient-Large-Model/Fast-dDrive \
     --image data/example/images/161_CAM_FRONT.jpg \
     --prompt "Describe the driving scene and produce a 5-second plan."
 
 # Waymo E2E validation eval (paper canonical Scaffold Spec, multi-GPU).
-MODEL_PATH=xiwenyoumu/Fast-dDrive EVAL_JSON=/path/to/waymo_val.json \
+MODEL_PATH=Efficient-Large-Model/Fast-dDrive EVAL_JSON=/path/to/waymo_val.json \
     IMAGE_ROOT=/path/to/image_root bash run_eval.sh
 ```
 
