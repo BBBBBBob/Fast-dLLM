@@ -294,6 +294,138 @@ def generate_with_dual_cache(
     return x, nfe
 
 
+@ torch.no_grad()
+def generate_first_block(model, prompt, steps=128, gen_length=128, block_length=128, temperature=0.,
+             remasking='low_confidence', mask_id=126336, threshold=None, factor=None):
+    '''
+    Args:
+        model: Mask predictor.
+        prompt: A tensor of shape (1, L).
+        steps: Sampling steps, less than or equal to gen_length.
+        gen_length: Generated answer length.
+        block_length: Block length, less than or equal to gen_length. If less than gen_length, it means using semi_autoregressive remasking.
+        temperature: Categorical distribution sampling temperature.
+        cfg_scale: Unsupervised classifier-free guidance scale.
+        remasking: Remasking strategy. 'low_confidence' or 'random'.
+        mask_id: The toke id of [MASK] is 126336.
+    '''
+    x = torch.full((prompt.shape[0], prompt.shape[1] + gen_length), mask_id, dtype=torch.long).to(model.device)
+    x[:, :prompt.shape[1]] = prompt.clone()
+
+    assert gen_length % block_length == 0
+    num_blocks = gen_length // block_length
+
+    assert steps % num_blocks == 0
+    steps = steps // num_blocks
+
+    nfe = 0
+    for num_block in range(1):
+        block_mask_index = (x[:, prompt.shape[1] + num_block * block_length: prompt.shape[1] + (num_block + 1) * block_length] == mask_id)
+        num_transfer_tokens = get_num_transfer_tokens(block_mask_index, steps)
+        i = 0
+        while True:
+            nfe += 1
+            mask_index = (x == mask_id)
+            logits = model(x).logits
+            mask_index[:, prompt.shape[1] + (num_block + 1) * block_length:] = 0
+            if factor is None:
+                x0, transfer_index = get_transfer_index(logits, temperature, remasking, mask_index, x, num_transfer_tokens[:, i] if threshold is None else None, threshold)
+            else:
+                x0, transfer_index = get_transfer_index_dynamic(logits, temperature, remasking, mask_index, x, None, factor)
+            x[transfer_index] = x0[transfer_index]
+            i += 1
+            if (x[:, prompt.shape[1] + num_block * block_length: prompt.shape[1] + (num_block + 1) * block_length] == mask_id).sum() == 0:
+                break
+
+    return x[:, prompt.shape[1]: prompt.shape[1] + block_length], nfe
+
+
+@torch.no_grad()
+def generate_with_dual_cache_first_block(
+    model, prompt, steps=128, gen_length=128, block_length=128, temperature=0.,
+    remasking="low_confidence", mask_id=126336, threshold=None, factor=None
+):
+    B = prompt.shape[0]
+    Lp = int(prompt.shape[1])  # Python int, not Tensor
+    assert gen_length % block_length == 0
+    num_blocks = gen_length // block_length
+
+    assert steps % num_blocks == 0
+    steps_per_block = steps // num_blocks
+
+    # x: (B, Lp + gen_length)
+    x = torch.full((B, Lp + gen_length), mask_id, dtype=torch.long, device=model.device)
+    x[:, :Lp] = prompt
+
+    nfe = 0
+
+    for nb in range(1):
+        s = Lp + nb * block_length
+        e = s + block_length
+
+        # Masks/indices for the current block
+        block_mask_index = (x[:, s:e] == mask_id)  # (B, block_length)
+        num_transfer_tokens = get_num_transfer_tokens(block_mask_index, steps_per_block)  # (B, steps_per_block)
+
+        # 1) Warm KV-cache on the full prefix once per block
+        out_full = model(x, use_cache=True)
+        past_key_values = out_full.past_key_values
+        nfe += 1
+
+        # Build a replace_position tensor indicating the block range (static slice)
+        replace_position = torch.zeros_like(x, dtype=torch.bool)
+        replace_position[:, s:e] = True  # boolean mask (not a dynamic slice bound)
+
+        # Step 0: do an initial transfer on the full logits
+        global_mask_index = (x == mask_id)
+        # Do not touch beyond current block in this phase
+        global_mask_index[:, e:] = False
+
+        if factor is None:
+            quota0 = None if threshold is not None else num_transfer_tokens[:, 0]  # (B,)
+            x0, transfer_index = get_transfer_index(
+                out_full.logits, temperature, remasking, global_mask_index, x, quota0, threshold
+            )
+        else:
+            x0, transfer_index = get_transfer_index_dynamic(
+                out_full.logits, temperature, remasking, global_mask_index, x, None, factor
+            )
+
+        # In-place update via torch.where (no tensor-slice assignment with mask)
+        x = torch.where(transfer_index, x0, x)
+
+        # 2) Semi-autoregressive refinement, fixed number of steps (graph-friendly)
+        #    Each iteration runs on the current block with KV-cache and replace_position
+        for i in range(1, steps_per_block):
+            # Evaluate logits only for current block with cache
+            if (x[:, s:e] == mask_id).sum() == 0:
+                break
+            logits_blk = model(
+                x[:, s:e], past_key_values=past_key_values, use_cache=True, replace_position=replace_position
+            ).logits  # shape expected by get_transfer_index*
+
+            # Mask and quota for this step (all tensor ops)
+            mask_blk = (x[:, s:e] == mask_id)  # (B, block_length)
+
+            if factor is None:
+                quota_i = None if threshold is not None else num_transfer_tokens[:, i]  # (B,)
+                x0_blk, transfer_idx_blk = get_transfer_index(
+                    logits_blk, temperature, remasking, mask_blk, x[:, s:e], quota_i, threshold
+                )
+            else:
+                x0_blk, transfer_idx_blk = get_transfer_index_dynamic(
+                    logits_blk, temperature, remasking, mask_blk, x[:, s:e], None, factor
+                )
+
+            # Merge back into x[:, s:e] using torch.where (no masked slice assignment)
+            blk_old = x[:, s:e]
+            blk_new = torch.where(transfer_idx_blk, x0_blk, blk_old)
+            x = torch.cat([x[:, :s], blk_new, x[:, e:]], dim=1)  # static concatenation
+
+            nfe += 1
+
+    return x[:, Lp: Lp + block_length], nfe
+
 
 def get_transfer_index(
     logits: torch.Tensor,
